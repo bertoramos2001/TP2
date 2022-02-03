@@ -90,7 +90,6 @@ public class Main {
 
 	private static void startBatchMode() throws IOException {
 		// TODO complete this method to start the simulation
-		//TODO esto es una prueba de git, quitar luego
 	}
 
 	private static void start(String[] args) throws IOException {
