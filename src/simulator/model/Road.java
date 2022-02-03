@@ -1,10 +1,24 @@
 package simulator.model;
 
+import java.util.List;
+
 import org.json.JSONObject;
 
 public class Road extends SimulatedObject {
+	
+	private Junction origin;
+	private Junction destination;
+	private int length;
+	private int maxSpeed;
+	private int actualSpeedLimit;
+	private int contLimit;
+	private Weather weather;
+	private int totalCont;
+	private List<Vehicle> vehicles;
+	
+	
 
-	Road(String id) {
+	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
