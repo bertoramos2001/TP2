@@ -20,6 +20,7 @@ public class Vehicle extends SimulatedObject {
 	
 	public Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
 		super(id);
+		
 		if (maxSpeed <= 0) {
 			throw new IllegalArgumentException("the max speed must be positive");
 		}
@@ -98,8 +99,20 @@ public class Vehicle extends SimulatedObject {
 
 	@Override
 	public JSONObject report() {
-		//TODO: aprender a crear JSON y hacer
-		return null;
+		JSONObject obj = new JSONObject();
+		
+		obj.put("id", _id);
+		obj.put("speed", actualSpeed);
+		obj.put("distance", totalDistance);
+		obj.put("co2", totalCont);
+		obj.put("class", contClass);
+		obj.put("status", status.toString());
+		
+		if (status != VehicleStatus.PENDING && status != VehicleStatus.ARRIVED ) {
+			obj.put("road", road.getId());
+			obj.put("location", location);
+		}
+		return obj;
 	}
 
 	public List<Junction> getItinerary() {

@@ -8,6 +8,14 @@ public class Junction extends SimulatedObject {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
+	
+	void addIncommingRoad(Road r) {
+		
+	}
+	
+	void addOutGoingRoad(Road r) {
+		
+	}
 
 	@Override
 	void advance(int time) {
