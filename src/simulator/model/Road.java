@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -22,15 +23,15 @@ public abstract class Road extends SimulatedObject {
 		super(id);
 		
 		if (maxSpeed <= 0) {
-			throw new IllegalArgumentException("the max speed must be positive");
+			throw new IllegalArgumentException("The max speed must be positive");
 		}
 		
 		if (contLimit < 0) {
-			throw new IllegalArgumentException("contamination limit must be non negative");
+			throw new IllegalArgumentException("Contamination limit must be non negative");
 		}
 		
 		if (length <= 0) {
-			throw new IllegalArgumentException("the road length must be positive");
+			throw new IllegalArgumentException("The road length must be positive");
 		}
 		
 		if (srcJunc == null || destJunc == null || weather == null) {
@@ -51,20 +52,35 @@ public abstract class Road extends SimulatedObject {
 	}
 	
 	public void enter(Vehicle v) {
+		if (v.getSpeed() != 0) {
+			throw new IllegalArgumentException("Vehicle should have no speed at the beginning");
+		}
 		
+		if (v.getLocation() != 0) {
+			throw new IllegalArgumentException("Vehicle should be at position 0 at the beginning");
+		}
+		
+		vehicles.add(v);
 	}
 	
 	public void exit(Vehicle v) {
-		
+		vehicles.remove(v);
 	}
 	
 	public void setWeather(Weather w) {
+		if (w == null) {
+			throw new IllegalArgumentException("Weather cannot be null");
+		}
 		
+		weather = w;
 	}
 	
 	public void addContamination(int contaminationThisStep) {
-		// TODO necesario para la clase vehicle, aun sin implementar
+		if (contaminationThisStep < 0) {
+			throw new IllegalArgumentException("Contamination cannot be negative");
+		}
 		
+		totalCont += contaminationThisStep;
 	}
 	
 	protected abstract void reduceTotalContamination();
@@ -76,6 +92,21 @@ public abstract class Road extends SimulatedObject {
 	@Override
 	void advance(int time) {
 		// TODO Auto-generated method stub
+		
+		//1. llamar a reduceTotalContamination
+		
+		//2. llamar a updateSpeedLimit
+		
+		//3. recorrer la lista y hacer lo siguiente: (hecho)
+		
+		for (int i = 0; i < vehicles.size(); i++) {
+			Vehicle actV = vehicles.get(i);
+			actV.setSpeed(calculateVehicleSpeed(actV));
+			
+			actV.advance(time);
+		}
+		
+		//4. ordenar la lista de vehiculos por localizacion
 		
 	}
 
@@ -125,8 +156,8 @@ public abstract class Road extends SimulatedObject {
 	}
 
 	public List<Vehicle> getVehicles() {
-		//TODO: debe devolver una lista de solo lectura
-		return vehicles;
+		//devuelve lista de solo lectura
+		return Collections.unmodifiableList(vehicles);
 	}
 
 }
