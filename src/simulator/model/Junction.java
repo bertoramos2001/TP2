@@ -13,7 +13,7 @@ public class Junction extends SimulatedObject {
 	private Map<Road,List<Vehicle>> queueRoad; //Lo recomienda por eficiencia pero no es indispensable
 	private int greenLightIndex;
 	private int lastStepLightChange;
-	//private LightSwitchStrategy lsStrategy;
+	private LightSwitchingStrategy lsStrategy;
 	//private DequeingStrategy dqStrategy;
 	protected int xCoor, yCoor;//No se usan esta práctica
 	
@@ -38,7 +38,6 @@ public class Junction extends SimulatedObject {
 			lastStepLightChange = 0;
 			this.xCoor = xCoor;
 			this.yCoor = yCoor;
-			
 			
 	}
 	
