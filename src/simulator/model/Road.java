@@ -10,11 +10,11 @@ public abstract class Road extends SimulatedObject {
 	private Junction origin;
 	private Junction destination;
 	private int length;
-	private int maxSpeed;
-	private int actualSpeedLimit;
-	private int contLimit;
-	private Weather weather;
-	private int totalCont;
+	protected int maxSpeed;
+	protected int actualSpeedLimit;
+	protected int contLimit;
+	protected Weather weather;
+	protected int totalCont;
 	private List<Vehicle> vehicles; //debe estar ordenada por la localizacion de los vehiculos en orden descendente
 	
 	
