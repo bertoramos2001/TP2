@@ -12,16 +12,14 @@ public class Junction extends SimulatedObject {
 	private List<List<Vehicle>> queueList;
 	private Map<Road,List<Vehicle>> queueRoad; //Lo recomienda por eficiencia pero no es indispensable
 	private int greenLightIndex;
-	private int lastStepLightChange;
+	private int lastSwitchingStep;
 	private LightSwitchingStrategy lsStrategy;
-	//private DequeingStrategy dqStrategy;
+	private DequeuingStrategy dqStrategy;
 	protected int xCoor, yCoor;//No se usan esta práctica
 	
-	//Junction(String id, LightSwitchStrategy lsStrategy, DequeingStrategy dqStrategy, int xCoor, int yCoor)
-	Junction(String id){
+	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 			super(id);
 			
-			/*
 			if (lsStrategy == null) {
 				throw new IllegalArgumentException("LightSwitchStrategy can't be null");
 			}
@@ -29,15 +27,17 @@ public class Junction extends SimulatedObject {
 			if (dqStrategy == null) {
 				throw new IllegalArgumentException("LightSwitchStrategy can't be null");
 			}
-			*/
+			
 			if (xCoor < 0 || yCoor < 0) {
 				throw new IllegalArgumentException("Coor must be a positive number");
 			}
 			
 			greenLightIndex = -1;
-			lastStepLightChange = 0;
+			lastSwitchingStep = 0;
 			this.xCoor = xCoor;
 			this.yCoor = yCoor;
+			this.lsStrategy = lsStrategy;
+			this.dqStrategy = dqStrategy;
 			
 	}
 	
