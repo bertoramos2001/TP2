@@ -26,7 +26,7 @@ public class CityRoad extends Road {
 
 	@Override
 	protected void updateSpeedLimit() {
-		// Testa velocidad no cambia en este tipo de carreteras
+		// La velocidad no cambia en este tipo de carreteras
 		
 	}
 

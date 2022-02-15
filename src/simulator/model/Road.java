@@ -51,7 +51,7 @@ public abstract class Road extends SimulatedObject {
 		
 	}
 	
-	public void enter(Vehicle v) {
+	void enter(Vehicle v) {
 		if (v.getSpeed() != 0) {
 			throw new IllegalArgumentException("Vehicle should have no speed at the beginning");
 		}
@@ -63,11 +63,11 @@ public abstract class Road extends SimulatedObject {
 		vehicles.add(v);
 	}
 	
-	public void exit(Vehicle v) {
+	void exit(Vehicle v) {
 		vehicles.remove(v);
 	}
 	
-	public void setWeather(Weather w) {
+	void setWeather(Weather w) {
 		if (w == null) {
 			throw new IllegalArgumentException("Weather cannot be null");
 		}
@@ -75,7 +75,7 @@ public abstract class Road extends SimulatedObject {
 		weather = w;
 	}
 	
-	public void addContamination(int contaminationThisStep) {
+	void addContamination(int contaminationThisStep) {
 		if (contaminationThisStep < 0) {
 			throw new IllegalArgumentException("Contamination cannot be negative");
 		}
@@ -83,11 +83,11 @@ public abstract class Road extends SimulatedObject {
 		totalCont += contaminationThisStep;
 	}
 	
-	protected abstract void reduceTotalContamination();
+	abstract void reduceTotalContamination();
 	
-	protected abstract void updateSpeedLimit();
+	abstract void updateSpeedLimit();
 	
-	protected abstract int calculateVehicleSpeed(Vehicle v);
+	abstract int calculateVehicleSpeed(Vehicle v);
 
 	@Override
 	void advance(int time) {

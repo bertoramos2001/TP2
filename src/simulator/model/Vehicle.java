@@ -18,7 +18,7 @@ public class Vehicle extends SimulatedObject {
 	private int totalDistance;
 	
 	
-	public Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
+	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
 		super(id);
 		
 		if (maxSpeed <= 0) {
@@ -45,7 +45,7 @@ public class Vehicle extends SimulatedObject {
 		totalDistance = 0;
 	}
 	
-	public void setSpeed(int s) {
+	void setSpeed(int s) {
 		if (s < 0) {
 			throw new IllegalArgumentException("actual speed must not be negative");
 		}
@@ -53,7 +53,7 @@ public class Vehicle extends SimulatedObject {
 		actualSpeed = Math.min(s, maxSpeed);
 	}
 	
-	public void setContaminationClass(int c) {
+	void setContaminationClass(int c) {
 		if ((c < 0) || (c > 10)) {
 			throw new IllegalArgumentException("contamination class must be between 0 and 10");
 		}
@@ -62,7 +62,7 @@ public class Vehicle extends SimulatedObject {
 	}
 
 	@Override
-	public void advance(int time) {
+	void advance(int time) {
 		if (status == VehicleStatus.TRAVELING) {
 			int oldLocation = location;
 			location = Math.min(location + actualSpeed, road.getLength());
@@ -81,7 +81,7 @@ public class Vehicle extends SimulatedObject {
 		}
 	}
 	
-	public void moveToNextRoad() {
+	void moveToNextRoad() {
 		if ((status != VehicleStatus.PENDING) && (status != VehicleStatus.WAITING)) {
 			throw new IllegalArgumentException("Vehicle must be waitint in a junction or pending to enter a road");
 		}

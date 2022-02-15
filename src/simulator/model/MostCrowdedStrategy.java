@@ -5,8 +5,8 @@ import java.util.List;
 public class MostCrowdedStrategy implements LightSwitchingStrategy {
 	
 	private int timeSlot;
-	
-	public MostCrowdedStrategy(int timeSlot) {
+	//TODO: no se si este constructor es package protected o no (en el enunciado no lo pone)
+	MostCrowdedStrategy(int timeSlot) {
 		this.timeSlot = timeSlot;
 	}
 
