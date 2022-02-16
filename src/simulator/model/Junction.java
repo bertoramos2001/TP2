@@ -25,11 +25,11 @@ public class Junction extends SimulatedObject {
 			}
 			
 			if (dqStrategy == null) {
-				throw new IllegalArgumentException("LightSwitchStrategy can't be null");
+				throw new IllegalArgumentException("DequeuingStrategy can't be null");
 			}
 			
 			if (xCoor < 0 || yCoor < 0) {
-				throw new IllegalArgumentException("Coor must be a positive number");
+				throw new IllegalArgumentException("Coordinates must be positive numbers");
 			}
 			
 			greenLightIndex = -1;
@@ -38,27 +38,80 @@ public class Junction extends SimulatedObject {
 			this.yCoor = yCoor;
 			this.lsStrategy = lsStrategy;
 			this.dqStrategy = dqStrategy;
+			//TODO: creo que falta inicializar listas
 			
 	}
 	
 	void addIncommingRoad(Road r) {
+		if (r.getDest() != this) {
+			throw new IllegalArgumentException("Entering road does not correspond to this junction");
+		}
 		
+		//TODO: hacer metodo
 	}
 	
 	void addOutGoingRoad(Road r) {
+		//TODO: hacer función
+	}
+	
+	void enter(Vehicle v) {
+		Road r = v.getRoad();
+		r.enter(v);
+	}
+	
+	Road roadTo(Junction j) {
+		Road r = null;
+		int size = leavingRoadMap.size();
+		int i = 0;
+		//TODO: no se si este bucle esta bien
+		while (r == null && i < size) {
+			if (leavingRoadMap.get(j) != null) {
+				r = leavingRoadMap.get(j);
+			}
+			i++;
+		}
 		
+		return r;
 	}
 
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
+		// TODO: no se si esta bien esta funcion, sin acabar
+		//1. emplear dequeuing strategy y recibir la lista de vehiculos que salen
+		List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
+		
+		//2. pide a los vehiculos que se muevan a sus siguientes carreteras
+		for (Vehicle v : vehiclesToLeave) {
+			v.moveToNextRoad();
+		}
+		//3. elimina a los vehiculos de las colas (se hace automáticamente en el paso anterior??)
+		
+		//4. utiliza lightswitching strategy para calcular la carretera en verde
+		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
+		//5. si esta es diferente a la actual, la pone en verde y pone el ultimo paso de cambio de semaforo al paso actual
+		if (newGreenLightIndex != greenLightIndex) {
+			greenLightIndex = newGreenLightIndex;
+			lastSwitchingStep = time;
+		}
 		
 	}
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject obj = new JSONObject();
+		
+		obj.put("id", _id);
+		
+		if (enteringRoadList.get(greenLightIndex) != null) {
+			obj.put("green", enteringRoadList.get(greenLightIndex).getId());
+		} else {
+			obj.put("green", "none");
+		}
+		//TODO: ver como hacer esta parte del report()
+		obj.put("queues", "");
+		//pintar cada una de las listas dentro del apartado queues
+
+		return obj;
 	}
 
 }
