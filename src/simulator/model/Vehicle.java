@@ -7,15 +7,16 @@ import org.json.JSONObject;
 
 public class Vehicle extends SimulatedObject {
 	
-	private List<Junction> itinerary;
-	private int maxSpeed;
-	private int actualSpeed;
-	private VehicleStatus status;
-	private Road road;
-	private int location;
-	private int contClass;
-	private int totalCont;
-	private int totalDistance;
+	protected List<Junction> itinerary;
+	protected int maxSpeed;
+	protected int actualSpeed;
+	protected VehicleStatus status;
+	protected Road road;
+	protected int location;
+	protected int contClass;
+	protected int totalCont;
+	protected int totalDistance;
+	protected int actualJuntion;
 	
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
@@ -76,7 +77,11 @@ public class Vehicle extends SimulatedObject {
 			road.addContamination(contaminationThisStep);
 			
 			if (location >= road.getLength()) {
-				//TODO: modificar estado del vehiculo y meterlo en la cola del cruce correspondiente
+				
+				actualSpeed = 0;
+				status = VehicleStatus.TRAVELING;
+				road.destination.enter(this);
+				
 			}
 		}
 	}
@@ -86,15 +91,32 @@ public class Vehicle extends SimulatedObject {
 			throw new IllegalArgumentException("Vehicle must be waitint in a junction or pending to enter a road");
 		}
 		
+		location = 0;
+		actualSpeed = 0;
+		
 		if (status == VehicleStatus.PENDING) {
-			//TODO: buscar la carretera a la que ha de ir (aun no esta en ninguna)
+			//TODO: No se si esta permitido acceder asi a las listas
+			road = itinerary.get(0).roadTo(itinerary.get(0));
+			status = VehicleStatus.TRAVELING;
+			actualJuntion = 1;
+			road.enter(this);
 		}
 		
 		if (status == VehicleStatus.WAITING) {
-			//TODO: buscar la carretera a la que ha de ir (ver si esta en el ultimo cruce de su itinerario)
+			if(actualJuntion == itinerary.size()) {
+				road.exit(this);
+				status = VehicleStatus.ARRIVED;	
+			}
+			else {
+				road.exit(this);
+				//TODO: No se si esta permitido acceder asi a las listas x2
+				road = road.destination.roadTo(itinerary.get(actualJuntion));
+				actualJuntion++;
+				road.enter(this);
+				status = VehicleStatus.TRAVELING;	
+			}
 		}
-		
-		//TODO: modificar el estado del vehiculo
+		//TODO: modificar el estado del vehiculo (creo que es lo quye esta arriba)
 	}
 
 	@Override

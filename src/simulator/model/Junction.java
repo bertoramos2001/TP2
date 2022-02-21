@@ -15,7 +15,7 @@ public class Junction extends SimulatedObject {
 	private int lastSwitchingStep;
 	private LightSwitchingStrategy lsStrategy;
 	private DequeuingStrategy dqStrategy;
-	protected int xCoor, yCoor;//No se usan esta práctica
+	protected int xCoor, yCoor;//No se usan esta prÃ¡ctica
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 			super(id);
@@ -47,11 +47,15 @@ public class Junction extends SimulatedObject {
 			throw new IllegalArgumentException("Entering road does not correspond to this junction");
 		}
 		
+		enteringRoadList.add(r);
+		List<Vehicle> aux_r = new LinkedList<Vehicle>();
+		queueList.add(aux_r);
+		queueRoad.put(r, aux_r);
 		//TODO: hacer metodo
 	}
 	
 	void addOutGoingRoad(Road r) {
-		//TODO: hacer función
+		//TODO: hacer funciÃ³n
 	}
 	
 	void enter(Vehicle v) {
@@ -84,7 +88,7 @@ public class Junction extends SimulatedObject {
 		for (Vehicle v : vehiclesToLeave) {
 			v.moveToNextRoad();
 		}
-		//3. elimina a los vehiculos de las colas (se hace automáticamente en el paso anterior??)
+		//3. elimina a los vehiculos de las colas (se hace automÃ¡ticamente en el paso anterior??)
 		
 		//4. utiliza lightswitching strategy para calcular la carretera en verde
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);

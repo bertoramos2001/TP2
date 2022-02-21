@@ -7,15 +7,15 @@ import org.json.JSONObject;
 
 public abstract class Road extends SimulatedObject {
 	
-	private Junction origin;
-	private Junction destination;
-	private int length;
+	protected Junction origin;
+	protected Junction destination;
+	protected int length;
 	protected int maxSpeed;
 	protected int actualSpeedLimit;
 	protected int contLimit;
 	protected Weather weather;
 	protected int totalCont;
-	private List<Vehicle> vehicles; //debe estar ordenada por la localizacion de los vehiculos en orden descendente
+	protected List<Vehicle> vehicles; //debe estar ordenada por la localizacion de los vehiculos en orden descendente
 	
 	
 
@@ -91,13 +91,14 @@ public abstract class Road extends SimulatedObject {
 
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
 		
 		//1. llamar a reduceTotalContamination
+		this.reduceTotalContamination();
 		
 		//2. llamar a updateSpeedLimit
+		this.updateSpeedLimit();
 		
-		//3. recorrer la lista y hacer lo siguiente: (hecho)
+		//3. recorrer la lista y hacer lo siguiente:
 		
 		for (int i = 0; i < vehicles.size(); i++) {
 			Vehicle actV = vehicles.get(i);
@@ -106,7 +107,7 @@ public abstract class Road extends SimulatedObject {
 			actV.advance(time);
 		}
 		
-		//4. ordenar la lista de vehiculos por localizacion
+		//TODO 4. ordenar la lista de vehiculos por localizacion
 		
 	}
 
