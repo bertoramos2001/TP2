@@ -1,5 +1,8 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,46 +17,71 @@ public class RoadMap {
 	Map<String, Vehicle> vehicleMapId;
 	
 	RoadMap() {
-		//TODO: inicializar los atributos de arriba en el constructor
+		junctionList = new ArrayList<Junction>();
+		roadList = new ArrayList<Road>();
+		vehicleList = new ArrayList<Vehicle>();
+		junctionMapId = new HashMap<String, Junction>();
+		roadMapId = new HashMap<String, Road>();
+		vehicleMapId = new HashMap<String, Vehicle>();
 	}
 	
 	void addJunction(Junction j) {
-		//TODO: hacer función
+		boolean found = junctionMapId.containsKey(j._id);
+		
+		if (!found) { //si no hay ningun cruce con el mismo identificador en la lista, lo añadimos y modificamos la lista y el mapa
+			junctionList.add(j);
+			
+			//TODO: no se si esta bien actualizado el mapa (creo que si) (igual con road y vehicle)
+			junctionMapId.put(j._id, j);
+		}
 	}
 	
 	void addRoad(Road r) {
-		//TODO: hacer función
+		boolean found = roadMapId.containsKey(r._id);
+		
+		//TODO: duda enunciado: los cruces que conecta la carretera existen en el mapa de carreteras o en el mapa de junction??
+		//hacer lo de (ii) del enunciado y lanzar excepcion
+		
+		if (!found) {
+			roadList.add(r);
+			roadMapId.put(r._id, r);
+		}
+		
 	}
 	
 	void addVehicle(Vehicle v) {
-		//TODO: hacer función
+		boolean found = vehicleMapId.containsKey(v._id);
+		
+		//TODO: falta comprobar itinerario valido
+		
+		if (!found) {
+			vehicleList.add(v);
+			vehicleMapId.put(v._id, v);
+		}
 	}
 	
 	public Junction getJunction(String id) {
-		//TODO: hacer función
-		return null;
+		return junctionMapId.get(id);
 	}
 	
 	public Road getRoad(String id) {
-		//TODO: hacer función
-		return null;
+		return roadMapId.get(id);
 	}
 	
 	public Vehicle getVehicle(String id) {
-		//TODO: hacer función
-		return null;
+		return vehicleMapId.get(id);
 	}
 	
 	public List<Junction>getJunctions() {
-		return null;
+		return Collections.unmodifiableList(junctionList);
 	}
 	
 	public List<Road>getRoads() {
-		return null;
+		return Collections.unmodifiableList(roadList);
 	}
 	
 	public List<Vehicle>getVehicles() {
-		return null;
+		return Collections.unmodifiableList(vehicleList);
 	}
 	
 	void reset() {

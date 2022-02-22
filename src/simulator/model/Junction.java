@@ -1,8 +1,11 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Junction extends SimulatedObject {
@@ -38,24 +41,21 @@ public class Junction extends SimulatedObject {
 			this.yCoor = yCoor;
 			this.lsStrategy = lsStrategy;
 			this.dqStrategy = dqStrategy;
-			//TODO: creo que falta inicializar listas
-			
+			enteringRoadList = new ArrayList<Road>();
+			leavingRoadMap = new HashMap<Junction, Road>();
+			queueList = new ArrayList<List<Vehicle>>();
+			queueRoad = new HashMap<Road, List<Vehicle>>();		
 	}
 	
 	void addIncommingRoad(Road r) {
 		if (r.getDest() != this) {
 			throw new IllegalArgumentException("Entering road does not correspond to this junction");
 		}
-		
-		enteringRoadList.add(r);
-		List<Vehicle> aux_r = new LinkedList<Vehicle>();
-		queueList.add(aux_r);
-		queueRoad.put(r, aux_r);
 		//TODO: hacer metodo
 	}
 	
 	void addOutGoingRoad(Road r) {
-		//TODO: hacer funciÃ³n
+		//TODO: hacer función
 	}
 	
 	void enter(Vehicle v) {
@@ -103,6 +103,7 @@ public class Junction extends SimulatedObject {
 	@Override
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
+		JSONArray array = new JSONArray();
 		
 		obj.put("id", _id);
 		
@@ -111,9 +112,12 @@ public class Junction extends SimulatedObject {
 		} else {
 			obj.put("green", "none");
 		}
-		//TODO: ver como hacer esta parte del report()
-		obj.put("queues", "");
-		//pintar cada una de las listas dentro del apartado queues
+		//TODO: ver si esto está bien
+		for (Road r : enteringRoadList) {
+			array.put(r.report());
+		}
+		
+		obj.put("queues", array);
 
 		return obj;
 	}
