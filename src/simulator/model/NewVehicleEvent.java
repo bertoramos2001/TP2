@@ -7,9 +7,9 @@ public class NewVehicleEvent extends Event {
 	private String id;
 	private int maxSpeed;
 	private int contClass;
-	private List<String> itinerary;
+	private List<Junction> itinerary;
 	
-	public NewVehicleEvent(int time, String id, int maxSpeed, int contClass, List<String> itinerary) { 
+	public NewVehicleEvent(int time, String id, int maxSpeed, int contClass, List<Junction> itinerary) { 
 		super(time);
 		this.id = id;
 		this.maxSpeed = maxSpeed;
@@ -20,9 +20,9 @@ public class NewVehicleEvent extends Event {
 
 	@Override
 	void execute(RoadMap map) {
-		// TODO mismo caso que en intercity y city road, lista de strings??
-		//Vehicle v = new Vehicle(id, maxSpeed, contClass, itinerary);
-		//v.moveToNextRoad();
+		//TODO mismo caso que en intercity y city road, lista de strings??
+		Vehicle v = new Vehicle(id, maxSpeed, contClass, itinerary);
+		v.moveToNextRoad();
 	}
 
 }
