@@ -95,7 +95,6 @@ public class Vehicle extends SimulatedObject {
 		actualSpeed = 0;
 		
 		if (status == VehicleStatus.PENDING) {
-			//TODO: No se si esta permitido acceder asi a las listas
 			road = itinerary.get(0).roadTo(itinerary.get(0));
 			status = VehicleStatus.TRAVELING;
 			actualJuntion = 1;
@@ -109,7 +108,6 @@ public class Vehicle extends SimulatedObject {
 			}
 			else {
 				road.exit(this);
-				//TODO: No se si esta permitido acceder asi a las listas x2
 				road = road.destination.roadTo(itinerary.get(actualJuntion));
 				actualJuntion++;
 				road.enter(this);
