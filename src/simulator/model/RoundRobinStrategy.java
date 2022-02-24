@@ -4,7 +4,6 @@ import java.util.List;
 
 public class RoundRobinStrategy implements LightSwitchingStrategy {
 	private int timeSlot;
-	//TODO: no se si este constructor es package protected o no (en el enunciado no lo pone)
 	RoundRobinStrategy(int timeSlot) {
 		this.timeSlot = timeSlot;
 	}

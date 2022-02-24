@@ -26,37 +26,36 @@ public class RoadMap {
 	}
 	
 	void addJunction(Junction j) {
-		boolean found = junctionMapId.containsKey(j._id);
+		boolean found = junctionMapId.containsKey(j.getId());
 		
 		if (!found) { //si no hay ningun cruce con el mismo identificador en la lista, lo añadimos y modificamos la lista y el mapa
 			junctionList.add(j);
 			
-			//TODO: no se si esta bien actualizado el mapa (creo que si) (igual con road y vehicle)
-			junctionMapId.put(j._id, j);
+			junctionMapId.put(j.getId(), j);
 		}
 	}
 	
 	void addRoad(Road r) {
-		boolean found = roadMapId.containsKey(r._id);
+		boolean found = roadMapId.containsKey(r.getId());
 		
 		//TODO: duda enunciado: los cruces que conecta la carretera existen en el mapa de carreteras o en el mapa de junction??
 		//hacer lo de (ii) del enunciado y lanzar excepcion
 		
 		if (!found) {
 			roadList.add(r);
-			roadMapId.put(r._id, r);
+			roadMapId.put(r.getId(), r);
 		}
 		
 	}
 	
 	void addVehicle(Vehicle v) {
-		boolean found = vehicleMapId.containsKey(v._id);
+		boolean found = vehicleMapId.containsKey(v.getId());
 		
 		//TODO: falta comprobar itinerario valido
 		
 		if (!found) {
 			vehicleList.add(v);
-			vehicleMapId.put(v._id, v);
+			vehicleMapId.put(v.getId(), v);
 		}
 	}
 	
