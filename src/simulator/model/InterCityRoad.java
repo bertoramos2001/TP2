@@ -1,6 +1,6 @@
 package simulator.model;
 
-public class IntercityRoad extends Road {
+public class InterCityRoad extends Road {
 	
 	private final int SUNNY_CONT_VAR = 2;
 	private final int CLOUDY_CONT_VAR = 3;
@@ -9,7 +9,7 @@ public class IntercityRoad extends Road {
 	private final int STORM_CONT_VAR = 20;
 	
 
-	IntercityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
+	InterCityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
 	}
 

@@ -9,23 +9,26 @@ public class SetWeatherEvent extends Event {
 	
 	public SetWeatherEvent(int time, List<Pair<String,Weather>> ws) {
 		super(time);
+		
 		if (ws == null) {
-			throw new IllegalArgumentException("ws cannot be null");
+			throw new IllegalArgumentException("weather-road list cannot be null");
 		}
+		
 		this.ws = ws;
-		}
+	}
 
 	@Override
 	void execute(RoadMap map) {
-		for(int i = 0; i < ws.size(); i++) {
-			if (map.getRoads() == null) {
-				throw new IllegalArgumentException("ws cannot be null");
+		
+		for (Pair<String, Weather> w : ws) {
+			Road r = map.getRoad(w.getFirst());
+			
+			if (r == null) {
+				throw new IllegalArgumentException("Road does not exist in map");
 			}
 			
+			r.setWeather(w.getSecond());
 		}
-			//TODO: falta terminar, me quede aquix2
-		
-		
 	}
 
 }
