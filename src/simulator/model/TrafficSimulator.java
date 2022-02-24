@@ -2,16 +2,13 @@ package simulator.model;
 
 
 import java.util.List;
-
 import org.json.JSONObject;
-
 import simulator.misc.SortedArrayList;
 
 public class TrafficSimulator {
 	
 	protected RoadMap roadMap;
-	//Tiene que esta ordenada por el tiempo delos eventos
-	protected List<Event> eventList;
+	protected List<Event> eventList; //ordenada por el tiempo de los eventos
 	protected int time;
 	
 	public TrafficSimulator() {
@@ -28,11 +25,11 @@ public class TrafficSimulator {
 	
 	public void advance() {
 		time++;
-		
-		//TODO nose si esta bien
+
 		for(int i = 0; i < eventList.size(); i++) {
-			if(time == eventList.get(i)._time) {
+			if(time == eventList.get(i).getTime()) {
 				eventList.get(i).execute(roadMap);
+				eventList.remove(i);
 			}
 		}
 		
@@ -60,7 +57,6 @@ public class TrafficSimulator {
 		obj.put("state", roadMap.report());
 		
 		return obj;
-		
 	}
 	
 
