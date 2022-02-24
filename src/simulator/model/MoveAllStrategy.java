@@ -6,7 +6,7 @@ public class MoveAllStrategy implements DequeuingStrategy {
 
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		// TODO devuelve todos los elementos en q (por hacer)
+		// TODO: duda. Una nueva lista con el mismo contenido? que sentido? Ver tambien move first si esta bien
 		return null;
 	}
 

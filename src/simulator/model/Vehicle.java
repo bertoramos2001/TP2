@@ -34,9 +34,7 @@ public class Vehicle extends SimulatedObject {
 			throw new IllegalArgumentException("itinerary size must be at least 2");
 		}
 		
-		//TODO ver si lo de itinerary esta bien (y ver si hay que quitar los imports de collections y arraylist)
-		itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
-		
+		this.itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
 		this.maxSpeed = maxSpeed;
 		status = VehicleStatus.PENDING;
 		road = null;
