@@ -2,6 +2,7 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,14 @@ public class Junction extends SimulatedObject {
 		if (r.getDest() != this) {
 			throw new IllegalArgumentException("Entering road does not correspond to this junction");
 		}
-		//TODO: hacer metodo
+		
+		enteringRoadList.add(r);
+		List<Vehicle> q = new LinkedList<Vehicle>();
+		q = r.getVehicles();
+		queueList.add(q);
+		
+		queueRoad.put(r, q);
+		
 	}
 	
 	void addOutGoingRoad(Road r) {
