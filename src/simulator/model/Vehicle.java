@@ -112,7 +112,6 @@ public class Vehicle extends SimulatedObject {
 				status = VehicleStatus.TRAVELING;	
 			}
 		}
-		//TODO: modificar el estado del vehiculo (creo que es lo quye esta arriba)
 	}
 
 	@Override

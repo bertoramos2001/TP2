@@ -5,7 +5,7 @@ import java.util.List;
 public class MostCrowdedStrategy implements LightSwitchingStrategy {
 	
 	private int timeSlot;
-	//TODO: no se si este constructor es package protected o no (en el enunciado no lo pone)
+	
 	MostCrowdedStrategy(int timeSlot) {
 		this.timeSlot = timeSlot;
 	}
@@ -23,8 +23,8 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 		if ((currTime - lastSwitchingTime) < timeSlot) {
 			return currGreen;
 		}
-		//TODO: pon en verde el semaforo con la cola mas larga DESDE currGreen + 1
-		return 0;
+
+		return getLongestQueueCircular(qs, currGreen);
 	}
 	
 	private int getFirstLongestQueue(List<List<Vehicle>> qs) {
@@ -36,6 +36,27 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 				maxQueueLength = qs.get(i).size();
 			}
 		}
+		return currInd;
+	}
+	
+	private int getLongestQueueCircular(List<List<Vehicle>> qs, int currGreen) {
+		int i = currGreen + 1, currInd = currGreen + 1, maxQueueLength = 0;
+		boolean found = false;
+		
+		while (i != currGreen && !found) {
+			if (qs.get(i).size() > maxQueueLength) {
+				currInd = i;
+				maxQueueLength = qs.get(i).size();
+			}
+			i = (i + 1) % qs.size();
+		}
+		
+		if (qs.get(currGreen).size() > maxQueueLength) {
+			currInd = currGreen;
+			maxQueueLength = qs.get(currGreen).size();
+		}
+		
+		
 		return currInd;
 	}
 

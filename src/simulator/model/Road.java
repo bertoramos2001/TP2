@@ -91,14 +91,8 @@ public abstract class Road extends SimulatedObject {
 
 	@Override
 	void advance(int time) {
-		
-		//1. llamar a reduceTotalContamination
 		this.reduceTotalContamination();
-		
-		//2. llamar a updateSpeedLimit
 		this.updateSpeedLimit();
-		
-		//3. recorrer la lista y hacer lo siguiente:
 		
 		for (int i = 0; i < vehicles.size(); i++) {
 			Vehicle actV = vehicles.get(i);

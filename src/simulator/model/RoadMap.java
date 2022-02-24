@@ -50,8 +50,14 @@ public class RoadMap {
 	
 	void addVehicle(Vehicle v) {
 		boolean found = vehicleMapId.containsKey(v.getId());
-		
+		boolean valid = true;
+		int i = 0;
 		//TODO: falta comprobar itinerario valido
+		List<Junction> itinerary = v.getItinerary();
+		
+		//while(i < itinerary.size() && valid) {
+		//	i++;
+		//}
 		
 		if (!found) {
 			vehicleList.add(v);
@@ -94,7 +100,6 @@ public class RoadMap {
 	
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
-		//TODO: no se si esta bien asi
 		obj.put("junctions", junctionList);
 		obj.put("road", roadList);
 		obj.put("vehicles", vehicleList);

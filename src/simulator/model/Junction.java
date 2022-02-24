@@ -63,7 +63,18 @@ public class Junction extends SimulatedObject {
 	}
 	
 	void addOutGoingRoad(Road r) {
-		//TODO: hacer función
+		if (r.getSrc() != this) {
+			throw new IllegalArgumentException("Leaving road does not correspond to this junction");
+		}
+		
+		Junction j = r.getDest();
+		Road rd = this.roadTo(j);
+		
+		if (rd != null) {
+			throw new IllegalArgumentException("Another road to the junction already exists");
+		}
+		
+		leavingRoadMap.put(j, r); //j es el cruce destino de la carretera r
 	}
 	
 	void enter(Vehicle v) {
@@ -75,7 +86,7 @@ public class Junction extends SimulatedObject {
 		Road r = null;
 		int size = leavingRoadMap.size();
 		int i = 0;
-		//TODO: no se si este bucle esta bien
+
 		while (r == null && i < size) {
 			if (leavingRoadMap.get(j) != null) {
 				r = leavingRoadMap.get(j);
@@ -89,18 +100,15 @@ public class Junction extends SimulatedObject {
 	@Override
 	void advance(int time) {
 		// TODO: no se si esta bien esta funcion, sin acabar
-		//1. emplear dequeuing strategy y recibir la lista de vehiculos que salen
 		List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
 		
-		//2. pide a los vehiculos que se muevan a sus siguientes carreteras
 		for (Vehicle v : vehiclesToLeave) {
 			v.moveToNextRoad();
+			//TODO: eliminar los vehiculos de las colas
+			//queueList.remove(v);
 		}
-		//3. elimina a los vehiculos de las colas (se hace automÃ¡ticamente en el paso anterior??)
-		
-		//4. utiliza lightswitching strategy para calcular la carretera en verde
+	
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
-		//5. si esta es diferente a la actual, la pone en verde y pone el ultimo paso de cambio de semaforo al paso actual
 		if (newGreenLightIndex != greenLightIndex) {
 			greenLightIndex = newGreenLightIndex;
 			lastSwitchingStep = time;
@@ -120,7 +128,7 @@ public class Junction extends SimulatedObject {
 		} else {
 			obj.put("green", "none");
 		}
-		//TODO: ver si esto está bien
+
 		for (Road r : enteringRoadList) {
 			array.put(r.report());
 		}
