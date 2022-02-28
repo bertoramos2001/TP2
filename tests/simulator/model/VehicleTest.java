@@ -94,7 +94,7 @@ class VehicleTest {
 
 		// a vehicle
 		Vehicle v1 = new Vehicle("v1", 50, 1, Arrays.asList(j1, j2));
-		assertThrowsExactly(UnsupportedOperationException.class, () -> v1.getItinerary().add(j3));
+		assertThrows(UnsupportedOperationException.class, () -> v1.getItinerary().add(j3));
 
 	}
 	

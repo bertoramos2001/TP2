@@ -2,7 +2,6 @@ package simulator.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -141,7 +140,7 @@ class CityRoadTest {
 		// a vehicle
 		Vehicle v1 = new Vehicle("v1", 50, 1, Arrays.asList(j1, j2));
 
-		assertThrowsExactly(UnsupportedOperationException.class, () -> r1.getVehicles().add(v1));
+		assertThrows(UnsupportedOperationException.class, () -> r1.getVehicles().add(v1));
 
 	}
 

@@ -12,8 +12,8 @@ class JunctionTest {
 		Junction j1 = new Junction("j1", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
 		Junction j2 = new Junction("j2", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
 		Junction j3 = new Junction("j3", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
-		Junction j4 = new Junction("j3", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
-		Junction j5 = new Junction("j3", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
+		Junction j4 = new Junction("j4", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
+		Junction j5 = new Junction("j5", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
 
 		// roads
 		Road r1 = new InterCityRoad("r1", j1, j3, 100, 500, 1000, Weather.SUNNY);
