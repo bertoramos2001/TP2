@@ -21,4 +21,4 @@ public class MoveFirstStrategyBuilder extends Builder<DequeuingStrategy> {
 	}
 
 }
-//TODO: ademas, falta crear las factory de dqs y lss (ver pg 21 y 22)
+//TODO: ademas, falta crear las factory de dqs, lss y eventos (ver pg 21, 22 y 24)
