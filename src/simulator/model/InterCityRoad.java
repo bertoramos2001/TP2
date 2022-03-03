@@ -53,12 +53,11 @@ public class InterCityRoad extends Road {
 	protected int calculateVehicleSpeed(Vehicle v) {
 		
 		if (weather == Weather.STORM) {
-			v.setSpeed((actualSpeedLimit * 8) / 10);
+			return (actualSpeedLimit * 8) / 10;
 		} else {
-			v.setSpeed(actualSpeedLimit);
+			return actualSpeedLimit;
 		}
 		
-		return 0;
 	}
 
 }

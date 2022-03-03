@@ -8,13 +8,13 @@ import org.json.JSONObject;
 
 import simulator.misc.Pair;
 import simulator.model.Event;
-import simulator.model.NewSetContClassEvent;
+import simulator.model.SetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event>{
 	
 	private static final String CLASS_NAME = "set_cont_class";
 	
-	public SetContClassEventBuilder(String type) {
+	public SetContClassEventBuilder() {
 		super(CLASS_NAME);
 	}
 
@@ -32,7 +32,7 @@ public class SetContClassEventBuilder extends Builder<Event>{
 			list.add(pair);
 		}
 		
-		Event ev = new NewSetContClassEvent(time, list);
+		Event ev = new SetContClassEvent(time, list);
 		
 		return ev;
 	}

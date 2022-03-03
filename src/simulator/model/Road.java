@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public abstract class Road extends SimulatedObject {
 		this.contLimit = contLimit;
 		this.length = length;
 		this.weather = weather;
+		this.vehicles = new ArrayList<Vehicle>();
 		
 		origin.addOutGoingRoad(this);
 		destination.addIncommingRoad(this);
@@ -97,7 +99,6 @@ public abstract class Road extends SimulatedObject {
 		for (int i = 0; i < vehicles.size(); i++) {
 			Vehicle actV = vehicles.get(i);
 			actV.setSpeed(calculateVehicleSpeed(actV));
-			
 			actV.advance(time);
 		}
 		
@@ -152,9 +153,7 @@ public abstract class Road extends SimulatedObject {
 
 	public List<Vehicle> getVehicles() {
 		//devuelve lista de solo lectura
-		//TODO: por que fallan aqui los tests?
-		//return Collections.unmodifiableList(vehicles);
-		return vehicles;
+		return Collections.unmodifiableList(vehicles);
 	}
 
 }

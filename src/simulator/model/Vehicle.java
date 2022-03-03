@@ -78,7 +78,7 @@ public class Vehicle extends SimulatedObject {
 			if (location >= road.getLength()) {
 				
 				actualSpeed = 0;
-				status = VehicleStatus.TRAVELING;
+				status = VehicleStatus.WAITING;
 				road.destination.enter(this);
 				
 			}
