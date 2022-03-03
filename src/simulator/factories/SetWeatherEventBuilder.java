@@ -23,12 +23,11 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 		int time = data.getInt("time");
 		JSONArray arr = data.getJSONArray("info");
 		List<Pair<String, Weather>> list = new ArrayList<Pair<String, Weather>>();
-		//TODO: esta parte me huele fatal, que opcion es mejor para weather??
+		
 		for (int i = 0; i < arr.length(); i++) {
 			String id = ((JSONObject)arr.get(i)).getString("road");
 			String weatherString = ((JSONObject)arr.getJSONObject(i)).getString("weather");
 			Weather weather = Weather.valueOf(weatherString.toUpperCase());
-			//Weather weather = ((JSONObject)arr.get(i)).getEnum(Weather.class, "weather");
 			
 			Pair<String, Weather> pair = new Pair<String, Weather>(id, weather);
 			list.add(pair);

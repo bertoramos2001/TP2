@@ -27,7 +27,7 @@ public class NewVehicleEventBuilder extends Builder<Event> {
 		List<String> list = new ArrayList<String>();
 		
 		for (int i = 0; i < arr.length(); i++) {
-			list.add(arr.get(i).toString());
+			list.add(arr.getString(i));
 		}
 		
 		Event ev = new NewVehicleEvent(time, id, maxspeed, contClass, list);

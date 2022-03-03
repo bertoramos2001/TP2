@@ -22,10 +22,8 @@ public class NewCityRoadEventBuilder extends Builder<Event> {
 		int length = data.getInt("length");
 		int co2limit = data.getInt("co2limit");
 		int maxspeed = data.getInt("maxspeed");
-		//TODO: duda, que opcion para sacar el enum es mejor??
 		String weatherString = data.getString("weather");
 		Weather weather = Weather.valueOf(weatherString.toUpperCase());
-		//Weather weather = data.getEnum(Weather.class, "weather");
 		
 		Event ev = new NewCityRoadEvent(time, id, src, dest, length, co2limit, maxspeed, weather);
 		

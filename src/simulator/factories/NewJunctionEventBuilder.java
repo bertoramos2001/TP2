@@ -7,6 +7,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.Junction;
 import simulator.model.LightSwitchingStrategy;
+import simulator.model.NewJunctionEvent;
 
 public class NewJunctionEventBuilder extends Builder<Event> {
 	
@@ -25,13 +26,13 @@ public class NewJunctionEventBuilder extends Builder<Event> {
 		int time = data.getInt("time");
 		String id = data.getString("id");
 		JSONArray arr = data.getJSONArray("coor");
-		//TODO: arreglar esto ultimo. Pasar de factory a lss y dqs strategy
-		lssFactory = (Factory<LightSwitchingStrategy>) data.getJSONObject("ls_strategy");
-		dqsFactory = (Factory<DequeuingStrategy>) data.getJSONObject("dq_strategy");
 		
-		//Event ev = new NewJunctionEvent(time, id, lssFactory, dqsFactory, arr[0], arr[1]);
+		LightSwitchingStrategy lss = lssFactory.createInstance(data.getJSONObject("ls_strategy"));
+		DequeuingStrategy dqs = dqsFactory.createInstance(data.getJSONObject("dq_strategy"));
 		
-		return null;
+		Event ev = new NewJunctionEvent(time, id, lss, dqs, arr.getInt(0), arr.getInt(1));
+		
+		return ev;
 	}
 
 }

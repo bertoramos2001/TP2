@@ -1,6 +1,6 @@
 package simulator.model;
 
-public class NewRoadEvent extends Event {
+public abstract class NewRoadEvent extends Event {
 	protected String id;
 	protected String srcJun;
 	protected String destJunc;
@@ -18,11 +18,6 @@ public class NewRoadEvent extends Event {
 		this.co2Limit = co2Limit;
 		this.maxSpeed = maxSpeed;
 		this.weather = weather;
-	}
-
-	@Override
-	void execute(RoadMap map) {
-		// TODO: duda Kevin. aqui se hace algo??
 	}
 
 }

@@ -103,7 +103,7 @@ public abstract class Road extends SimulatedObject {
 		}
 		
 		//TODO 4. ordenar la lista de vehiculos por localizacion
-		
+		//vrear clase sortByLocation y ahi haces el compareTo. aqui llamas a sort con newSortByLocation
 	}
 
 	@Override

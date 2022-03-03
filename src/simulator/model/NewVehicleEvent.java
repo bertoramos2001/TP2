@@ -21,7 +21,6 @@ public class NewVehicleEvent extends Event {
 
 	@Override
 	void execute(RoadMap map) {
-		//TODO: duda, esta bien crear una nueva lista aqui?
 		List<Junction> juncItinerary = new ArrayList<Junction>();
 		
 		for (String id : itinerary) {
