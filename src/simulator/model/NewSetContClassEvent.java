@@ -26,7 +26,7 @@ public class NewSetContClassEvent extends Event {
 				throw new IllegalArgumentException("Vehicle does not exist in map");
 			}
 		
-			v.setContaminationClass(c.getSecond());
+			v.setContClass(c.getSecond());
 		}
 	}
 

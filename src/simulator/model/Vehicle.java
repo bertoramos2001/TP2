@@ -48,11 +48,12 @@ public class Vehicle extends SimulatedObject {
 		if (s < 0) {
 			throw new IllegalArgumentException("actual speed must not be negative");
 		}
-		
-		actualSpeed = Math.min(s, maxSpeed);
+		if (status == VehicleStatus.TRAVELING) { //vehicle only modifies speed if it is traveling
+			actualSpeed = Math.min(s, maxSpeed);
+		}
 	}
 	
-	void setContaminationClass(int c) {
+	void setContClass(int c) {
 		if ((c < 0) || (c > 10)) {
 			throw new IllegalArgumentException("contamination class must be between 0 and 10");
 		}
@@ -93,7 +94,7 @@ public class Vehicle extends SimulatedObject {
 		actualSpeed = 0;
 		
 		if (status == VehicleStatus.PENDING) {
-			road = itinerary.get(0).roadTo(itinerary.get(0));
+			road = itinerary.get(0).roadTo(itinerary.get(1));
 			status = VehicleStatus.TRAVELING;
 			actualJuntion = 1;
 			road.enter(this);
