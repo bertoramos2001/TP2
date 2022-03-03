@@ -38,31 +38,63 @@ public class RoadMap {
 	void addRoad(Road r) {
 		boolean found = roadMapId.containsKey(r.getId());
 		
-		//TODO: duda enunciado: los cruces que conecta la carretera existen en el mapa de carreteras o en el mapa de junction??
-		//hacer lo de (ii) del enunciado y lanzar excepcion
-		
-		if (!found) {
-			roadList.add(r);
-			roadMapId.put(r.getId(), r);
+		if (found) { //si se encuentra otra carretera con el mismo id en el mapa
+			throw new IllegalArgumentException("Cannot have repeated roads in the map");
 		}
+		
+		boolean foundj1 = false, foundj2 = false;
+		int i = 0;
+		while(i < junctionList.size() && (!foundj1 || !foundj2)) {
+			if (junctionList.get(i) == r.getSrc()) {
+				foundj1 = true;
+			}
+			if (junctionList.get(i) == r.getDest()) {
+				foundj2 = true;
+			}
+		}
+		
+		if (!foundj1 || !foundj2) {
+			throw new IllegalArgumentException("Cannot find junctions to be joint by new road");
+		}
+		
+		roadList.add(r);
+		roadMapId.put(r.getId(), r);
 		
 	}
 	
 	void addVehicle(Vehicle v) {
 		boolean found = vehicleMapId.containsKey(v.getId());
-		boolean valid = true;
-		int i = 0;
-		//TODO: falta comprobar itinerario valido
-		List<Junction> itinerary = v.getItinerary();
 		
-		//while(i < itinerary.size() && valid) {
-		//	i++;
-		//}
-		
-		if (!found) {
-			vehicleList.add(v);
-			vehicleMapId.put(v.getId(), v);
+		if (found) { //si se encuentra otro vehiculo con el mismo id en el mapa
+			throw new IllegalArgumentException("Cannot have repeated vehicles in the map");
 		}
+		
+		boolean valid = true, roadExists;
+		int i = 0, j = 1, k;
+		List<Junction> itinerary = v.getItinerary();
+		//TODO: este bucle es bastante complejo y al parecer, siempre da que es !valid (ARREGLAR)
+		while(j < itinerary.size() && valid) { //bucle que recorre todo el itinerario, cogiendo pares consecutivos de cruces
+			k = 0;
+			roadExists = false;
+			while (k < roadList.size() && !roadExists) { //bucle que recorre la lista de carreteras, buscando carreteras que unan los cruces del itinerario
+				if (roadList.get(k).getSrc() == itinerary.get(i) && roadList.get(k).getDest() == itinerary.get(k)) {
+					roadExists = true;
+				}
+				k++;
+			}
+			if (!roadExists) {
+				valid = false;
+			}
+			i++;
+			j++;
+		}
+		
+		if (!valid) {
+			throw new IllegalArgumentException("Vehicle itinerary is not valid");
+		}
+		
+		vehicleList.add(v);
+		vehicleMapId.put(v.getId(), v);
 	}
 	
 	public Junction getJunction(String id) {

@@ -1,13 +1,14 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoveAllStrategy implements DequeuingStrategy {
 
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
-		// TODO: duda. Una nueva lista con el mismo contenido? que sentido? Ver tambien move first si esta bien
-		return null;
+		List<Vehicle> list = new ArrayList<Vehicle>(q);
+		return list;
 	}
 
 }

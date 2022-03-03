@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public abstract class Road extends SimulatedObject {
@@ -101,9 +102,8 @@ public abstract class Road extends SimulatedObject {
 			actV.setSpeed(calculateVehicleSpeed(actV));
 			actV.advance(time);
 		}
-		
-		//TODO 4. ordenar la lista de vehiculos por localizacion
-		//vrear clase sortByLocation y ahi haces el compareTo. aqui llamas a sort con newSortByLocation
+		//ordenar vehiculos de la carretera por localizacion. Esto está definido en la clase compareVehicles
+		vehicles.sort(new compareVehicles());
 	}
 
 	@Override
@@ -114,8 +114,11 @@ public abstract class Road extends SimulatedObject {
 		obj.put("speedLimit", actualSpeedLimit);
 		obj.put("weather", weather);
 		obj.put("co2", totalCont);
-		obj.put("vehicles", vehicles);
-
+		
+		JSONArray arr = new JSONArray(vehicles);
+		
+		obj.put("vehicles", arr);
+		
 		return obj;
 	}
 	
