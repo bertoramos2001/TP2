@@ -40,7 +40,7 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 	}
 	
 	private int getLongestQueueCircular(List<List<Vehicle>> qs, int currGreen) {
-		int i = currGreen + 1, currInd = currGreen + 1, maxQueueLength = 0;
+		int i = (currGreen + 1) % qs.size(), currInd = currGreen + 1, maxQueueLength = 0;
 		boolean found = false;
 		
 		while (i != currGreen && !found) {

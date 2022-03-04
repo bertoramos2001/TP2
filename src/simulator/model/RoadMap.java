@@ -30,7 +30,6 @@ public class RoadMap {
 		
 		if (!found) { //si no hay ningun cruce con el mismo identificador en la lista, lo añadimos y modificamos la lista y el mapa
 			junctionList.add(j);
-			
 			junctionMapId.put(j.getId(), j);
 		}
 	}
@@ -51,6 +50,7 @@ public class RoadMap {
 			if (junctionList.get(i) == r.getDest()) {
 				foundj2 = true;
 			}
+			i++;
 		}
 		
 		if (!foundj1 || !foundj2) {

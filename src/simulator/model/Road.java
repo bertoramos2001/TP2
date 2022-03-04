@@ -111,11 +111,15 @@ public abstract class Road extends SimulatedObject {
 		JSONObject obj = new JSONObject();
 		
 		obj.put("id", _id);
-		obj.put("speedLimit", actualSpeedLimit);
-		obj.put("weather", weather);
+		obj.put("speedlimit", actualSpeedLimit);
 		obj.put("co2", totalCont);
+		obj.put("weather", weather.toString());
 		
-		JSONArray arr = new JSONArray(vehicles);
+		JSONArray arr = new JSONArray();
+		
+		for (Vehicle v : vehicles) {
+			arr.put(v.getId());
+		}
 		
 		obj.put("vehicles", arr);
 		
