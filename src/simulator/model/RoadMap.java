@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RoadMap {
@@ -28,10 +29,13 @@ public class RoadMap {
 	void addJunction(Junction j) {
 		boolean found = junctionMapId.containsKey(j.getId());
 		
-		if (!found) { //si no hay ningun cruce con el mismo identificador en la lista, lo añadimos y modificamos la lista y el mapa
-			junctionList.add(j);
-			junctionMapId.put(j.getId(), j);
+		if (found) {
+			throw new IllegalArgumentException("Cannot add junction, repeated id");
 		}
+		
+		//si no hay ningun cruce con el mismo identificador en la lista, lo añadimos y modificamos la lista y el mapa
+		junctionList.add(j);
+		junctionMapId.put(j.getId(), j);
 	}
 	
 	void addRoad(Road r) {
@@ -69,28 +73,24 @@ public class RoadMap {
 			throw new IllegalArgumentException("Cannot have repeated vehicles in the map");
 		}
 		
-		boolean valid = true, roadExists;
+		boolean roadExists;
 		int i = 0, j = 1, k;
 		List<Junction> itinerary = v.getItinerary();
-		//TODO: este bucle es bastante complejo y al parecer, siempre da que es !valid (ARREGLAR)
-		while(j < itinerary.size() && valid) { //bucle que recorre todo el itinerario, cogiendo pares consecutivos de cruces
+
+		while(j < itinerary.size()) { //bucle que recorre todo el itinerario, cogiendo pares consecutivos de cruces
 			k = 0;
 			roadExists = false;
 			while (k < roadList.size() && !roadExists) { //bucle que recorre la lista de carreteras, buscando carreteras que unan los cruces del itinerario
-				if (roadList.get(k).getSrc() == itinerary.get(i) && roadList.get(k).getDest() == itinerary.get(k)) {
+				if (roadList.get(k).getSrc() == itinerary.get(i) && roadList.get(k).getDest() == itinerary.get(j)) {
 					roadExists = true;
 				}
 				k++;
 			}
 			if (!roadExists) {
-				valid = false;
+				throw new IllegalArgumentException("Vehicle itinerary is not valid");
 			}
 			i++;
 			j++;
-		}
-		
-		if (!valid) {
-			throw new IllegalArgumentException("Vehicle itinerary is not valid");
 		}
 		
 		vehicleList.add(v);
@@ -132,9 +132,24 @@ public class RoadMap {
 	
 	public JSONObject report() {
 		JSONObject obj = new JSONObject();
-		obj.put("junctions", junctionList);
-		obj.put("road", roadList);
-		obj.put("vehicles", vehicleList);
+		JSONArray arr = new JSONArray();
+		
+		for (Junction j : junctionList) {
+			arr.put(j.report());
+		}
+		obj.put("junctions", arr);
+		arr = new JSONArray(); //reseteamos el JSONArray para introducir nuevos elementos en roadList
+		
+		for (Road r : roadList) {
+			arr.put(r.report());
+		}
+		obj.put("roads", arr);
+		arr = new JSONArray(); //reseteamos el JSONArray para introducir nuevos elementos en vehicleList
+		
+		for (Vehicle v : vehicleList) {
+			arr.put(v.report());
+		}
+		obj.put("vehicles", arr);
 		
 		return obj;
 	}

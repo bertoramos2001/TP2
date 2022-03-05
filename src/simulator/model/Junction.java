@@ -99,14 +99,14 @@ public class Junction extends SimulatedObject {
 
 	@Override
 	void advance(int time) {
-		// TODO: no se si esta bien esta funcion, sin acabar
+		// TODO: no se si esta bien esta funcion
 		List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
 		
 		for (Vehicle v : vehiclesToLeave) {
 			v.moveToNextRoad();
-			//TODO: eliminar los vehiculos de las colas
-			//queueList.remove(v);
 		}
+		
+		queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
 	
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
 		if (newGreenLightIndex != greenLightIndex) {
@@ -118,22 +118,27 @@ public class Junction extends SimulatedObject {
 
 	@Override
 	public JSONObject report() {
-		JSONObject obj = new JSONObject();
-		JSONArray array = new JSONArray();
+		JSONObject obj = new JSONObject(), roadObj = new JSONObject();
+		JSONArray arr = new JSONArray(), roadArr = new JSONArray();
 		
 		obj.put("id", _id);
-		
-		if (enteringRoadList.get(greenLightIndex) != null) {
+		if ((greenLightIndex != -1) && enteringRoadList.get(greenLightIndex) != null) {
 			obj.put("green", enteringRoadList.get(greenLightIndex).getId());
 		} else {
 			obj.put("green", "none");
 		}
 
 		for (Road r : enteringRoadList) {
-			array.put(r.report());
+			roadObj.put("road", r.getId());
+			
+			for (Vehicle v : r.getVehicles()) {
+				roadArr.put(v.getId());
+			}
+			roadObj.put("vehicles", roadArr);
+			arr.put(roadObj);
 		}
 		
-		obj.put("queues", array);
+		obj.put("queues", arr);
 
 		return obj;
 	}
