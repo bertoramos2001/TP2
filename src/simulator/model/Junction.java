@@ -14,7 +14,7 @@ public class Junction extends SimulatedObject {
 	private List<Road> enteringRoadList;
 	private Map<Junction,Road> leavingRoadMap;
 	private List<List<Vehicle>> queueList;
-	private Map<Road,List<Vehicle>> queueRoad; //Lo recomienda por eficiencia pero no es indispensable
+	private Map<Road,List<Vehicle>> queueMap; //Lo recomienda por eficiencia pero no es indispensable
 	private int greenLightIndex;
 	private int lastSwitchingStep;
 	private LightSwitchingStrategy lsStrategy;
@@ -45,7 +45,7 @@ public class Junction extends SimulatedObject {
 			enteringRoadList = new ArrayList<Road>();
 			leavingRoadMap = new HashMap<Junction, Road>();
 			queueList = new ArrayList<List<Vehicle>>();
-			queueRoad = new HashMap<Road, List<Vehicle>>();		
+			queueMap = new HashMap<Road, List<Vehicle>>();		
 	}
 	
 	void addIncommingRoad(Road r) {
@@ -58,7 +58,7 @@ public class Junction extends SimulatedObject {
 		q = r.getVehicles();
 		queueList.add(q);
 		
-		queueRoad.put(r, q);
+		queueMap.put(r, q);
 		
 	}
 	
@@ -101,7 +101,7 @@ public class Junction extends SimulatedObject {
 	void advance(int time) {
 		// TODO: no se si esta bien esta funcion
 		//TODO: no se si lo de greenLightIndex != -1 esta bien, que hace si estan todos en rojo?
-		if (greenLightIndex != -1) {
+		if (greenLightIndex != -1 && !queueList.isEmpty()) {
 			List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
 			
 			for (Vehicle v : vehiclesToLeave) {
@@ -109,7 +109,6 @@ public class Junction extends SimulatedObject {
 			}
 			
 			queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
-		
 		}
 		
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
@@ -132,12 +131,21 @@ public class Junction extends SimulatedObject {
 			obj.put("green", "none");
 		}
 
-		for (Road r : enteringRoadList) {
-			roadObj.put("road", r.getId());
+		//for (Road r : enteringRoadList) {
+		for (int i = 0 ; i < enteringRoadList.size(); i++) {
+			//roadObj.put("road", r.getId());
+			roadObj.put("road", enteringRoadList.get(i).getId());
 			
-			for (Vehicle v : r.getVehicles()) {
+			//List<Vehicle> list = queueMap.get(r);
+			List<Vehicle> list = queueList.get(i);
+			
+			for (Vehicle v : list) {
 				roadArr.put(v.getId());
 			}
+			
+			//for (Vehicle v : r.getVehicles()) {
+			//	roadArr.put(v.getId());
+			//}
 			roadObj.put("vehicles", roadArr);
 			arr.put(roadObj);
 		}

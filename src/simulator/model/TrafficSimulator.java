@@ -27,7 +27,7 @@ public class TrafficSimulator {
 		time++;
 		int aux = 0;
 		
-		while (time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
+		while (aux < eventList.size() && time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
 			eventList.get(aux).execute(roadMap);
 			aux++;
 		}
