@@ -37,7 +37,7 @@ public abstract class Road extends SimulatedObject {
 		}
 		
 		if (srcJunc == null || destJunc == null || weather == null) {
-			throw new IllegalArgumentException("sorce junction, destination junction and weather cannot be null");
+			throw new IllegalArgumentException("source junction, destination junction and weather cannot be null");
 		}
 		
 		origin = srcJunc;

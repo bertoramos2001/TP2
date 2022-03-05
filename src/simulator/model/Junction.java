@@ -100,14 +100,18 @@ public class Junction extends SimulatedObject {
 	@Override
 	void advance(int time) {
 		// TODO: no se si esta bien esta funcion
-		List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
+		//TODO: no se si lo de greenLightIndex != -1 esta bien, que hace si estan todos en rojo?
+		if (greenLightIndex != -1) {
+			List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
+			
+			for (Vehicle v : vehiclesToLeave) {
+				v.moveToNextRoad();
+			}
+			
+			queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
 		
-		for (Vehicle v : vehiclesToLeave) {
-			v.moveToNextRoad();
 		}
 		
-		queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
-	
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
 		if (newGreenLightIndex != greenLightIndex) {
 			greenLightIndex = newGreenLightIndex;

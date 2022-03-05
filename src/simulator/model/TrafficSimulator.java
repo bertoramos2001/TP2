@@ -25,20 +25,23 @@ public class TrafficSimulator {
 	
 	public void advance() {
 		time++;
+		int aux = 0;
+		
+		while (time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
+			eventList.get(aux).execute(roadMap);
+			aux++;
+		}
 
-		for(int i = 0; i < eventList.size(); i++) {
-			if(time == eventList.get(i).getTime()) {
-				eventList.get(i).execute(roadMap);
-				eventList.remove(i);
-			}
+		for (int i = 0; i < aux; i++) { //borraremos todos los eventos ejecutados anteriormente (estan ordenados por tiempo)
+			eventList.remove(0);
 		}
 		
-		for(int i = 0; i < roadMap.getJunctions().size() ; i++) {
-			roadMap.junctionList.get(i).advance(time);
+		for (int i = 0; i < roadMap.getJunctions().size(); i++) {
+			roadMap.getJunctions().get(i).advance(time);
 		}
 		
-		for(int i = 0; i < roadMap.getRoads().size() ; i++) {
-			roadMap.roadList.get(i).advance(time);
+		for (int i = 0; i < roadMap.getRoads().size(); i++) {
+			roadMap.getRoads().get(i).advance(time);
 		}
 	
 	}
