@@ -78,10 +78,11 @@ public class Vehicle extends SimulatedObject {
 			
 			if (location >= road.getLength()) {
 				Junction nextJunc = itinerary.get(lastJunction);
-				actualSpeed = 0;
-				location = 0;
+				//actualSpeed = 0;
+				//location = 0;
 				nextJunc.enter(this);
 				status = VehicleStatus.WAITING;
+				actualSpeed = 0;
 				
 			}
 		}

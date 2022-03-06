@@ -64,19 +64,30 @@ public class Junction extends SimulatedObject {
 			throw new IllegalArgumentException("Leaving road does not correspond to this junction");
 		}
 		
-		Junction j = r.getDest();
-		Road rd = this.roadTo(j);
-		
-		if (rd != null) {
-			throw new IllegalArgumentException("Another road to the junction already exists");
+		if (leavingRoadMap.containsKey(r.getDest())) {
+			throw new IllegalArgumentException("Another road has the same dest junction");
 		}
 		
-		leavingRoadMap.put(j, r); //j es el cruce destino de la carretera r
+		leavingRoadMap.put(r.getDest(), r); //j es el cruce destino de la carretera r
 	}
 	
 	void enter(Vehicle v) {
-		Road r = v.getRoad();
-		r.enter(v);
+		//int i = 0;
+		boolean found = false;
+		int aux = 0;
+		
+		for (int i = 0; i < enteringRoadList.size(); i++) {
+			if (v.getRoad() == enteringRoadList.get(i)) {
+				found = true;
+				aux = i;
+				break;
+			}
+		}
+		
+		if (found) {
+			queueList.get(aux).add(v);
+			queueMap.get(enteringRoadList.get(aux)).add(v);
+		}
 	}
 	
 	Road roadTo(Junction j) {
@@ -87,9 +98,7 @@ public class Junction extends SimulatedObject {
 
 	@Override
 	void advance(int time) {
-		// TODO: no se si esta bien esta funcion
-		//TODO: no se si lo de greenLightIndex != -1 esta bien, que hace si estan todos en rojo?
-		if (greenLightIndex != -1 && !queueList.isEmpty()) {
+		if (greenLightIndex != -1) {
 			List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
 			
 			if (vehiclesToLeave != null) {
