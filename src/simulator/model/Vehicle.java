@@ -16,7 +16,7 @@ public class Vehicle extends SimulatedObject {
 	protected int contClass;
 	protected int totalCont;
 	protected int totalDistance;
-	protected int actualJuntion;
+	protected int lastJunction;
 	
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
@@ -42,6 +42,7 @@ public class Vehicle extends SimulatedObject {
 		this.contClass = contClass;
 		totalCont = 0;
 		totalDistance = 0;
+		lastJunction = 0;
 	}
 	
 	void setSpeed(int s) {
@@ -70,16 +71,17 @@ public class Vehicle extends SimulatedObject {
 			int advancedDistance = location - oldLocation;
 			
 			totalDistance += advancedDistance;
-			totalCont = totalDistance * contClass;
-			
 			int contaminationThisStep = contClass * advancedDistance;
+			totalCont += contaminationThisStep;
+		
 			road.addContamination(contaminationThisStep);
 			
 			if (location >= road.getLength()) {
-				
+				Junction nextJunc = itinerary.get(lastJunction);
 				actualSpeed = 0;
+				location = 0;
+				nextJunc.enter(this);
 				status = VehicleStatus.WAITING;
-				road.destination.enter(this);
 				
 			}
 		}
@@ -90,28 +92,23 @@ public class Vehicle extends SimulatedObject {
 			throw new IllegalArgumentException("Vehicle must be waitint in a junction or pending to enter a road");
 		}
 		
-		location = 0;
-		actualSpeed = 0;
-		
-		if (status == VehicleStatus.PENDING) {
-			road = itinerary.get(0).roadTo(itinerary.get(1));
-			status = VehicleStatus.TRAVELING;
-			actualJuntion = 1;
-			road.enter(this);
+		if (status == VehicleStatus.WAITING) {
+			road.exit(this);
 		}
 		
-		if (status == VehicleStatus.WAITING) {
-			if(actualJuntion == itinerary.size()) {
-				road.exit(this);
-				status = VehicleStatus.ARRIVED;	
-			}
-			else {
-				road.exit(this);
-				road = road.destination.roadTo(itinerary.get(actualJuntion));
-				actualJuntion++;
-				road.enter(this);
-				status = VehicleStatus.TRAVELING;	
-			}
+		if (lastJunction == itinerary.size() -1) {
+			status = VehicleStatus.ARRIVED;
+			road = null;
+			actualSpeed = 0;
+		} else {
+			Junction act = itinerary.get(lastJunction);
+			lastJunction++;
+			Road nextRoad = act.roadTo(itinerary.get(lastJunction));
+			location = 0;
+			actualSpeed = 0;
+			nextRoad.enter(this);
+			road = nextRoad;
+			status = VehicleStatus.TRAVELING;
 		}
 	}
 

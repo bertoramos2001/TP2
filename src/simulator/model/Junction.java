@@ -54,11 +54,8 @@ public class Junction extends SimulatedObject {
 		}
 		
 		enteringRoadList.add(r);
-		List<Vehicle> q = new LinkedList<Vehicle>();
-		q = r.getVehicles();
-		queueList.add(q);
-		
-		queueMap.put(r, q);
+		queueList.add(new LinkedList<Vehicle>());
+		queueMap.put(r,  new LinkedList<Vehicle>());
 		
 	}
 	
@@ -83,17 +80,8 @@ public class Junction extends SimulatedObject {
 	}
 	
 	Road roadTo(Junction j) {
-		Road r = null;
-		int size = leavingRoadMap.size();
-		int i = 0;
-
-		while (r == null && i < size) {
-			if (leavingRoadMap.get(j) != null) {
-				r = leavingRoadMap.get(j);
-			}
-			i++;
-		}
-		
+		Road r;
+		r = leavingRoadMap.get(j);
 		return r;
 	}
 
@@ -104,11 +92,13 @@ public class Junction extends SimulatedObject {
 		if (greenLightIndex != -1 && !queueList.isEmpty()) {
 			List<Vehicle> vehiclesToLeave = dqStrategy.dequeue(queueList.get(greenLightIndex));
 			
-			for (Vehicle v : vehiclesToLeave) {
-				v.moveToNextRoad();
+			if (vehiclesToLeave != null) {
+				for (Vehicle v : vehiclesToLeave) {
+					v.moveToNextRoad();
+				}
+				queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
+				queueMap.get(enteringRoadList.get(greenLightIndex)).removeAll(vehiclesToLeave); //borramos tambien los vehiculos del mapa de colas
 			}
-			
-			queueList.get(greenLightIndex).removeAll(vehiclesToLeave); //borramos los vehiculos de la carretera de la que se van
 		}
 		
 		int newGreenLightIndex = lsStrategy.chooseNextGreen(enteringRoadList, queueList, greenLightIndex, lastSwitchingStep, time);
@@ -121,8 +111,8 @@ public class Junction extends SimulatedObject {
 
 	@Override
 	public JSONObject report() {
-		JSONObject obj = new JSONObject(), roadObj = new JSONObject();
-		JSONArray arr = new JSONArray(), roadArr = new JSONArray();
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
 		
 		obj.put("id", _id);
 		if ((greenLightIndex != -1) && enteringRoadList.get(greenLightIndex) != null) {
@@ -131,21 +121,17 @@ public class Junction extends SimulatedObject {
 			obj.put("green", "none");
 		}
 
-		//for (Road r : enteringRoadList) {
 		for (int i = 0 ; i < enteringRoadList.size(); i++) {
-			//roadObj.put("road", r.getId());
+			JSONObject roadObj = new JSONObject();
 			roadObj.put("road", enteringRoadList.get(i).getId());
 			
-			//List<Vehicle> list = queueMap.get(r);
 			List<Vehicle> list = queueList.get(i);
 			
+			JSONArray roadArr = new JSONArray();
 			for (Vehicle v : list) {
 				roadArr.put(v.getId());
 			}
 			
-			//for (Vehicle v : r.getVehicles()) {
-			//	roadArr.put(v.getId());
-			//}
 			roadObj.put("vehicles", roadArr);
 			arr.put(roadObj);
 		}

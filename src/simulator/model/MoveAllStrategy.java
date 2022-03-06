@@ -8,6 +8,9 @@ public class MoveAllStrategy implements DequeuingStrategy {
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
 		List<Vehicle> list = new ArrayList<Vehicle>(q);
+		if (q.isEmpty()) {
+			return null;
+		}
 		return list;
 	}
 

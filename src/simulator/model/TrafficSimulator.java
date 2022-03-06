@@ -36,12 +36,14 @@ public class TrafficSimulator {
 			eventList.remove(0);
 		}
 		
-		for (int i = 0; i < roadMap.getJunctions().size(); i++) {
-			roadMap.getJunctions().get(i).advance(time);
+		List<Junction> junctionList = roadMap.getJunctions();
+		for (Junction j : junctionList) {
+			j.advance(time);
 		}
 		
-		for (int i = 0; i < roadMap.getRoads().size(); i++) {
-			roadMap.getRoads().get(i).advance(time);
+		List<Road> roadList = roadMap.getRoads();
+		for (Road r : roadList) {
+			r.advance(time);
 		}
 	
 	}
