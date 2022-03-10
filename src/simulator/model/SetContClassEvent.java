@@ -4,7 +4,6 @@ import java.util.List;
 import simulator.misc.Pair;
 
 public class SetContClassEvent extends Event {
-	private int time;
 	private List<Pair<String, Integer>> cs;
 
 	public SetContClassEvent(int time, List<Pair<String,Integer>> cs) {

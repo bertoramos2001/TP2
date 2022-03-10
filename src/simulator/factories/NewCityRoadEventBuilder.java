@@ -31,8 +31,3 @@ public class NewCityRoadEventBuilder extends Builder<Event> {
 	}
 
 }
-
-//TODO: refactorizar builders de carretera en una clase padre
-//
-// El plan es pasar super(data), devolver null en el padre y devolver aqui el ev, con variables protected
-//

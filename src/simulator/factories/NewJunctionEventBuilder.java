@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
-import simulator.model.Junction;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.NewJunctionEvent;
 

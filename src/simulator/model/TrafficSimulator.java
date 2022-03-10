@@ -19,7 +19,6 @@ public class TrafficSimulator {
 	}
 	
 	public void addEvent(Event e) {
-		//TODO ver si se estan añadiendo ya ordenados en el sortedArray
 		eventList.add(e);
 	}
 	
