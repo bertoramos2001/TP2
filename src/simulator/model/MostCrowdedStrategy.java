@@ -17,7 +17,7 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 		}
 		
 		if (currGreen == -1) {
-			return getFirstLongestQueue(qs);
+			return getFirstLongestQueue(qs); //TODO: usar aquio la funcion auxiliar circular
 		}
 		
 		if ((currTime - lastSwitchingTime) < timeSlot) {

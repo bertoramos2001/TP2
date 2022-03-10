@@ -19,5 +19,17 @@ public abstract class NewRoadEvent extends Event {
 		this.maxSpeed = maxSpeed;
 		this.weather = weather;
 	}
+	
+	
+	protected abstract Road createRoad(Junction src, Junction dest);
+	
+	void execute(RoadMap map) {
+		Junction src = map.getJunction(srcJun);
+		Junction dest = map.getJunction(destJunc);
+		
+		Road r = createRoad(src, dest);
+		map.addRoad(r);
+		
+	}
 
 }
