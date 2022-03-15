@@ -5,7 +5,7 @@ import java.util.List;
 import org.json.JSONObject;
 import simulator.misc.SortedArrayList;
 
-public class TrafficSimulator {
+public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	
 	protected RoadMap roadMap;
 	protected List<Event> eventList; //ordenada por el tiempo de los eventos
@@ -61,6 +61,42 @@ public class TrafficSimulator {
 		obj.put("state", roadMap.report());
 		
 		return obj;
+	}
+
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	void onAdvanceStart(RoadMap map, List<Event> events, int time) {
+		//TODO: ver si todos estos son package protected, si se implementan aqui, como implementarlos y cuando se llaman
+	}
+	
+	void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
+		
+	}
+	
+	void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
+		
+	}
+	
+	void onReset(RoadMap map, List<Event> events, int time) {
+		
+	}
+	
+	void onRegister(RoadMap map, List<Event> events, int time) {
+		
+	}
+	
+	void onError(String err) {
+		
 	}
 	
 

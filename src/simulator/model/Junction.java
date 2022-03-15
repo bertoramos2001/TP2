@@ -19,7 +19,7 @@ public class Junction extends SimulatedObject {
 	private int lastSwitchingStep;
 	private LightSwitchingStrategy lsStrategy;
 	private DequeuingStrategy dqStrategy;
-	protected int xCoor, yCoor;//No se usan esta prÃ¡ctica
+	protected int xCoor, yCoor;
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 			super(id);
@@ -148,6 +148,22 @@ public class Junction extends SimulatedObject {
 		obj.put("queues", arr);
 
 		return obj;
+	}
+	
+	public int getX() {
+		return xCoor;
+	}
+	
+	public int getY() {
+		return yCoor;
+	}
+	
+	public int getGreenLightIndex() {
+		return greenLightIndex;
+	}
+	
+	public List<Road> getInRoads() {
+		return enteringRoadList;
 	}
 
 }

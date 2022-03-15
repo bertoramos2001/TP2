@@ -12,6 +12,7 @@ import org.json.JSONTokener;
 
 import simulator.factories.Factory;
 import simulator.model.Event;
+import simulator.model.TrafficSimObserver;
 
 public class Controller {
 	protected TrafficSimulator simulator;
@@ -61,5 +62,20 @@ public class Controller {
 	
 	public void reset() {
 		simulator.reset();
+	}
+	
+	public void addObserver(TrafficSimObserver o) {
+		//TODO: hacer funcion
+		//no se si la funcion es package protected (no lo menciona>)
+	}
+	
+	public void removeObserver(TrafficSimObserver o) {
+		//TODO: hacer funcion
+		//no se si la funcion es package protected (no lo menciona>)
+	}
+	
+	public void addEvent(Event e) {
+		//TODO: hacer funcion
+		//no se si la funcion es package protected (no lo menciona>)
 	}
 }
