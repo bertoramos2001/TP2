@@ -172,7 +172,7 @@ public class Main {
 		if (_inFile != null) {
 			controller.loadEvents(new FileInputStream(_inFile));
 		}
-		//TODO: el enunciado dice que se ignora el -o, hay que hacer algo mas que esto?
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
