@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -32,6 +34,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -40,6 +43,7 @@ public class Main {
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
 	private static int ticks;
+	private static String startUpMode = null;
 
 	private static void parseArgs(String[] args) {
 
@@ -56,6 +60,7 @@ public class Main {
 			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseTicksOption(line);
+			parseModeOption(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -82,6 +87,7 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop (default value is 10)\".build()").build());
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg().desc("Run mode, can be either run on batch or GUI mode").build());
 		return cmdLineOptions;
 	}
 
@@ -95,9 +101,6 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
-			throw new ParseException("An events file is missing");
-		}
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
@@ -109,6 +112,16 @@ public class Main {
 			ticks = Integer.parseInt(line.getOptionValue('t'));
 		else
 			ticks = _timeLimitDefaultValue;
+	}
+	
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		
+		if (line.hasOption("m")) {
+			startUpMode = line.getOptionValue("m");
+		} else {
+			startUpMode = "gui";
+		}
+		
 	}
 
 	private static void initFactories() {
@@ -144,14 +157,41 @@ public class Main {
 		TrafficSimulator simulator = new TrafficSimulator();
 		Controller controller = new Controller(simulator, _eventsFactory);
 		
+		if (_inFile == null) { //añadimos ahora aqui la excepcion de que falta el fichero de entrada, porque solo se debe tener en cuenta cuando estamos en modo batch
+			throw new IOException("An events file is missing");
+		}
+		
 		controller.loadEvents(new FileInputStream(_inFile));
 		controller.run(ticks, new FileOutputStream(_outFile));
+	}
+	
+	private static void startGUIMode() throws IOException {
+		TrafficSimulator simulator = new TrafficSimulator();
+		Controller controller = new Controller(simulator, _eventsFactory);
+		
+		if (_inFile != null) {
+			controller.loadEvents(new FileInputStream(_inFile));
+		}
+		//TODO: el enunciado dice que se ignora el -o, hay que hacer algo mas que esto?
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+			new MainWindow(controller);
+			}
+		});
 	}
 
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
+
+		if (startUpMode == "console") {
+			startBatchMode();
+		} else if (startUpMode == "gui"){
+			startGUIMode();
+		} else {
+			throw new IOException("Startup mode is not valid. Must be gui or console");
+		}
 	}
 
 	// example command lines:
