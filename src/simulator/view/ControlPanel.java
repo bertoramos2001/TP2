@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.*;
@@ -77,7 +78,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		folderButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/open.png")));
 		folderButton.setToolTipText("Open a file");
 		myToolBar.add(folderButton);
-		folderButton.addActionListener((e) -> {loadFile(fc);});
+		//TODO: ver si esta gestión de errores ha de estar aqui
+		folderButton.addActionListener((e) -> {try {
+			loadFile(fc);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}});
 		
 		myToolBar.addSeparator();
 		
@@ -131,17 +137,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		myToolBar.setMargin(new Insets(5, 5, 5, 5));
 	}
 	
-		//TODO: este metodo hay que cambiarlo a control panel junto a todo lo de la toolbar, preguntar como se hace
-		private void loadFile(JFileChooser fc) {
+		private void loadFile(JFileChooser fc) throws IOException {
 			int i = fc.showOpenDialog(this);
 			if (i == JFileChooser.APPROVE_OPTION) {
-				//TODO: el file tiene que tener un throws pero eso me da fallos
 				ctrl.reset();
-				//try {
-				//	ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
-				//} catch (FileNotFoundException e) {
-				//	throw new FileNotFoundException("Selected file was not found");
-				//}
+				ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
 				System.out.println(fc.getSelectedFile());
 			}
 		}
