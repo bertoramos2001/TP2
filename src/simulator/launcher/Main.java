@@ -168,7 +168,7 @@ public class Main {
 	private static void startGUIMode() throws IOException {
 		TrafficSimulator simulator = new TrafficSimulator();
 		Controller controller = new Controller(simulator, _eventsFactory);
-		
+		//TODO: ver si funciona si no se mete fileInput, hacer algo mas con fileOutput?
 		if (_inFile != null) {
 			controller.loadEvents(new FileInputStream(_inFile));
 		}
