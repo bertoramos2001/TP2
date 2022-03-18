@@ -65,17 +65,17 @@ public class Controller {
 	}
 	
 	public void addObserver(TrafficSimObserver o) {
-		//TODO: hacer funcion
-		//no se si la funcion es package protected (no lo menciona>)
+		//TODO: no se si la funcion es package protected (no lo menciona)
+		simulator.addObserver(o);
 	}
 	
 	public void removeObserver(TrafficSimObserver o) {
-		//TODO: hacer funcion
-		//no se si la funcion es package protected (no lo menciona>)
+		//no se si la funcion es package protected (no lo menciona)
+		simulator.removeObserver(o);
 	}
 	
 	public void addEvent(Event e) {
-		//TODO: hacer funcion
-		//no se si la funcion es package protected (no lo menciona>)
+		//no se si la funcion es package protected (no lo menciona)
+		simulator.addEvent(e);
 	}
 }

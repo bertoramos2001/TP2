@@ -10,6 +10,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	protected RoadMap roadMap;
 	protected List<Event> eventList; //ordenada por el tiempo de los eventos
 	protected int time;
+	private List<TrafficSimObserver> observerList;
 	
 	public TrafficSimulator() {
 		roadMap = new RoadMap();
@@ -65,38 +66,50 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 
 	@Override
 	public void addObserver(TrafficSimObserver o) {
-		// TODO Auto-generated method stub
-		
+		//TODO: aqui da error, no se por que
+		//observerList.add(o);
 	}
 
 	@Override
 	public void removeObserver(TrafficSimObserver o) {
-		// TODO Auto-generated method stub
-		
+		observerList.remove(o);
 	}
 	
-	void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		//TODO: ver si todos estos son package protected, si se implementan aqui, como implementarlos y cuando se llaman
+	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
+		//TODO: ver si todos estos son package protected, si esta bien lo que hice
+		for (TrafficSimObserver o : observerList) {
+			o.onAdvanceStart(map, events, time);
+		}
 	}
 	
-	void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		
+	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
+		for (TrafficSimObserver o : observerList) {
+			o.onAdvanceEnd(map, events, time);
+		}
 	}
 	
-	void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		
+	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
+		for (TrafficSimObserver o : observerList) {
+			o.onEventAdded(map, events, e, time);
+		}
 	}
 	
-	void onReset(RoadMap map, List<Event> events, int time) {
-		
+	public void onReset(RoadMap map, List<Event> events, int time) {
+		for (TrafficSimObserver o : observerList) {
+			o.onReset(map, events, time);
+		}
 	}
 	
-	void onRegister(RoadMap map, List<Event> events, int time) {
-		
+	public void onRegister(RoadMap map, List<Event> events, int time) {
+		for (TrafficSimObserver o : observerList) {
+			o.onRegister(map, events, time);
+		}
 	}
 	
-	void onError(String err) {
-		
+	public void onError(String err) {
+		for (TrafficSimObserver o : observerList) {
+			o.onError(err);
+		}
 	}
 	
 

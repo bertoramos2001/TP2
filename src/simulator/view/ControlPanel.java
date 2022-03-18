@@ -2,6 +2,8 @@ package simulator.view;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.*;
@@ -16,8 +18,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Controller ctrl;
 
 	ControlPanel(Controller ctrl) {
+		this.ctrl = ctrl;
 		ctrl.addObserver(this);
 		initGUI();
 	}
@@ -117,7 +121,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		exitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/exit.png")));
 		exitButton.setToolTipText("Exit the simulator");
 		myToolBar.add(exitButton);
-		//cerrar la aplicacion
+		exitButton.addActionListener((e) -> {
+			int confirm = JOptionPane.showConfirmDialog(null, "Do you want to exit program?");
+			if (confirm == JOptionPane.YES_OPTION) {
+				System.exit(0);
+			}
+		});
 		
 		myToolBar.setMargin(new Insets(5, 5, 5, 5));
 	}
@@ -126,7 +135,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void loadFile(JFileChooser fc) {
 			int i = fc.showOpenDialog(this);
 			if (i == JFileChooser.APPROVE_OPTION) {
-				//TODO: aqui añadir el archivo a ejecucion
+				//TODO: el file tiene que tener un throws pero eso me da fallos
+				ctrl.reset();
+				//try {
+				//	ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
+				//} catch (FileNotFoundException e) {
+				//	throw new FileNotFoundException("Selected file was not found");
+				//}
 				System.out.println(fc.getSelectedFile());
 			}
 		}
