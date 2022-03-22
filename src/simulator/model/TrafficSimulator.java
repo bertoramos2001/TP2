@@ -66,7 +66,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 
 	@Override
 	public void addObserver(TrafficSimObserver o) {
-		//TODO: aqui da error, no se por que
+		//TODO: no se por que aqui me da error
 		//observerList.add(o);
 	}
 
