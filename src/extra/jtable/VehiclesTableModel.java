@@ -23,6 +23,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	public VehiclesTableModel(Controller ctrl) {
 		//TODO: con este constructor tengo el mismo problema que en events table model (pasara en todas las tablas)
 		vehicles = null;
+		ctrl.addObserver(this);
 	}
 	
 	public void update() {

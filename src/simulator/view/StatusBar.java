@@ -1,7 +1,9 @@
 package simulator.view;
 
+import java.awt.FlowLayout;
 import java.util.List;
-import javax.swing.JPanel;
+
+import javax.swing.*;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -10,8 +12,27 @@ import simulator.model.TrafficSimObserver;
 
 public class StatusBar extends JPanel implements TrafficSimObserver {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	StatusBar(Controller ctrl) {
+		ctrl.addObserver(this);
+		initGUI();
+	}
+	
+	private void initGUI() {
+		JPanel statusPanel = new JPanel();
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.add(statusPanel);
 		
+		JLabel timeLabel = new JLabel();
+		timeLabel.setText("Time: ");
+		statusPanel.add(timeLabel);
+		
+		//TODO: falta poner el get time y el getEvent
+
 	}
 	
 	@Override

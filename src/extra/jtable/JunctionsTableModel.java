@@ -14,11 +14,13 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private List<Junction> junctions;
 	private String[] colNames = { "id", "Green", "Queues"};
 	
 	public JunctionsTableModel(Controller ctrl) {
 		junctions = null;
+		ctrl.addObserver(this);
 	}
 	
 	public void update() {

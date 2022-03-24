@@ -16,11 +16,13 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private List<Road> roads;
 	private String[] colNames = { "id", "Length", "Weather", "Max. Speed", "Speed Limit", "Total CO2", "CO2 Limit"};
 	
 	public RoadsTableModel(Controller ctrl) {
 		roads = null;
+		ctrl.addObserver(this);
 	}
 	
 	public void update() {

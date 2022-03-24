@@ -3,7 +3,6 @@ package simulator.view;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 	
 	 private void initGUI() {
-		 this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		this.add(controlPanel);
 		

@@ -20,11 +20,11 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public EventsTableModel(Controller ctrl) {
 		//TODO: solo añadi este constructor porque me daba error en Main Window si no (llama al constructor con el controlador como parámetro)
 		_events = null;
+		ctrl.addObserver(this);
 	}
-	
-	//TODO: si tenemos el otro constructor, quitamos este???
+	//TODO: este es el constructor que estaba, si lo quito me da error en JTableExamples
 	public EventsTableModel() {
-		_events=null;
+		_events = null;
 	}
 
 	public void update() {
@@ -96,7 +96,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
