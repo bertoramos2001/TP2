@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Vehicle;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
 	/**
@@ -90,6 +92,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		contClassButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/co2class.png")));
 		contClassButton.setToolTipText("Change CO2 Class of a Vehicle");
 		myToolBar.add(contClassButton);
+		contClassButton.addActionListener((e) -> {
+			selectCont();
+		});
 		//listener del boton
 		
 		JButton weatherButton = new JButton();
@@ -143,6 +148,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 				ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
 				System.out.println(fc.getSelectedFile());
 			}
+		}
+		
+		private void selectCont() {
+			ChangeCO2ClassDialog dialog = new ChangeCO2ClassDialog(this);
+			//int status = dialog.open(new ArrayList<Vehicle>());
+			int status = 0;
+			//TODO: esta bien usar aqui vehicle e importarlo a esta clase? Tener un atributo map?
+			//status = dialog.open(map.getVehicles());
+			
+			if (status != 0) {
+				//asignar la contaminacion al coche pedido por el usuario
+			}
+			
 		}
 	
 

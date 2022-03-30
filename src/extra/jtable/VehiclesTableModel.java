@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
@@ -28,6 +29,11 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	
 	public void update() {
 		fireTableDataChanged();	
+	}
+	
+	public void setVehiclesList(List<Vehicle> vehiclesList) {
+		vehicles = vehiclesList;
+		update();
 	}
 
 	@Override
@@ -100,7 +106,6 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

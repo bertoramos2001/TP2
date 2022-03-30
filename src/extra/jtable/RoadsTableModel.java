@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
@@ -27,6 +28,11 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	
 	public void update() {
 		fireTableDataChanged();	
+	}
+	
+	public void setRoadsList(List<Road> roadsList) {
+		roads = roadsList;
+		update();
 	}
 
 	@Override

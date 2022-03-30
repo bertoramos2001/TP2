@@ -26,6 +26,11 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	public void update() {
 		fireTableDataChanged();	
 	}
+	
+	public void setJunctionsList(List<Junction> junctionsList) {
+		junctions = junctionsList;
+		update();
+	}
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
