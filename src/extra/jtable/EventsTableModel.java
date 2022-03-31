@@ -1,5 +1,6 @@
 package extra.jtable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -15,23 +16,22 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	
 	
 	private List<EventEx> _events;
+	private List<Event> events;
 	private String[] _colNames = { "#", "Time", "Priority" };
 	
 	public EventsTableModel(Controller ctrl) {
 		//TODO: solo añadi este constructor porque me daba error en Main Window si no (llama al constructor con el controlador como parámetro)
 		_events = null;
+		events = new ArrayList<Event>();
 		ctrl.addObserver(this);
 	}
 	//TODO: este es el constructor que estaba, si lo quito me da error en JTableExamples
 	public EventsTableModel() {
 		_events = null;
+		events = new ArrayList<Event>();
 	}
 
 	public void update() {
-		// observar que si no refresco la tabla no se carga
-		// La tabla es la represantación visual de una estructura de datos,
-		// en este caso de un ArrayList, hay que notificar los cambios.
-		
 		// We need to notify changes, otherwise the table does not refresh.
 		fireTableDataChanged();		
 	}
@@ -46,8 +46,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		return false;
 	}
 
-	//si no pongo esto no coge el nombre de las columnas
-	//
 	//this is for the column header
 	@Override
 	public String getColumnName(int col) {
@@ -55,8 +53,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 
 	@Override
-	// método obligatorio, probad a quitarlo, no compila
-	//
+	// método obligatorio
 	// this is for the number of columns
 	public int getColumnCount() {
 		return _colNames.length;
@@ -64,18 +61,12 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	// método obligatorio
-	//
 	// the number of row, like those in the events list
 	public int getRowCount() {
 		return _events == null ? 0 : _events.size();
 	}
 
 	@Override
-	// método obligatorio
-	// así es como se va a cargar la tabla desde el ArrayList
-	// el índice del arrayList es el número de fila pq en este ejemplo
-	// quiero enumerarlos.
-	//
 	// returns the value of a particular cell 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
@@ -84,10 +75,10 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 			s = rowIndex;
 			break;
 		case 1:
-			s = _events.get(rowIndex).getTime();
+			s = 1;
 			break;
 		case 2:
-			s = _events.get(rowIndex).getPriority();
+			s = events.get(rowIndex).toString();
 			break;
 		}
 		return s;
@@ -107,6 +98,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		// TODO Auto-generated method stub
+		events.add(e);
 	}
 
 	@Override

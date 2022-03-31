@@ -1,6 +1,7 @@
 package simulator.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
 import simulator.misc.SortedArrayList;
@@ -15,12 +16,14 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	public TrafficSimulator() {
 		roadMap = new RoadMap();
 		eventList = new SortedArrayList<Event>();
+		observerList = new ArrayList<TrafficSimObserver>();
 		time = 0;
 		
 	}
 	
 	public void addEvent(Event e) {
 		eventList.add(e);
+		onEventAdded(roadMap, eventList, e, time);
 	}
 	
 	public void advance() {
@@ -67,7 +70,8 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	@Override
 	public void addObserver(TrafficSimObserver o) {
 		//TODO: no se por que aqui me da error
-		//observerList.add(o);
+		//System.out.println(o.toString());
+		observerList.add(o);
 	}
 
 	@Override
