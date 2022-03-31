@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -13,7 +12,6 @@ import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
-import simulator.model.Vehicle;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
 	/**
@@ -21,6 +19,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Controller ctrl;
+	private boolean stopped;
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
@@ -95,7 +94,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		contClassButton.addActionListener((e) -> {
 			selectCont();
 		});
-		//listener del boton
 		
 		JButton weatherButton = new JButton();
 		weatherButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/weather.png")));
@@ -105,22 +103,28 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		myToolBar.addSeparator();
 		
+		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
+		
 		JButton playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
 		playButton.setToolTipText("Run the simulator");
 		myToolBar.add(playButton);
-		//listener del boton
+		playButton.addActionListener((e) -> {
+			run_sim((Integer)contTicks.getValue());
+		});
 		
 		JButton stopButton = new JButton();
 		stopButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/stop.png")));
 		stopButton.setToolTipText("Stop the simulator");
 		myToolBar.add(stopButton);
+		stopButton.addActionListener((e) -> {
+			stop();
+		});
 		//listener del boton
 		
 		JLabel ticks = new JLabel("Ticks");
 		myToolBar.add(ticks);
 		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
 		contTicks.setMaximumSize(new Dimension(50, 50));
 		myToolBar.add(contTicks);
 		
@@ -162,6 +166,38 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			}
 			
 		}
-	
+		
+		private void enableToolBar(boolean enabled) {
+			if (enabled) {
+				//TODO: se ven los botones
+			} else {
+				//se inhabilitan los botones
+			}
+		}
+		
+		private void run_sim(int n) {
+			if (n > 0 && !stopped) {
+				try {
+					ctrl.run(1);
+				} catch (Exception e) {
+					// TODO show error message
+					stopped = true;
+					return;
+				}
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						run_sim(n - 1);
+					}
+				});
+			} else {
+				enableToolBar(true);
+				stopped = true;
+			}
+		}
+		
+		private void stop() {
+			stopped = true;
+		}
 
 }
