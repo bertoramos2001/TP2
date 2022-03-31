@@ -4,10 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import extra.jtable.EventsTableModel;
-import extra.jtable.JunctionsTableModel;
-import extra.jtable.RoadsTableModel;
-import extra.jtable.VehiclesTableModel;
 import simulator.control.Controller;
 
 public class MainWindow extends JFrame {
@@ -16,6 +12,8 @@ public class MainWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Controller _ctrl;
+	private EventsTableModel eventsModel;
+	private JTable eventsTable;
 	
 	public MainWindow(Controller ctrl) {
 		super("Traffic Simulator");
@@ -47,6 +45,9 @@ public class MainWindow extends JFrame {
 		// tables
 		JPanel eventsView = createViewPanel(new JTable(new EventsTableModel(_ctrl)), "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
+		eventsModel = new EventsTableModel(_ctrl);
+		eventsTable = new JTable(eventsModel);
+		eventsView.add(new JScrollPane(eventsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
 		tablesPanel.add(eventsView);
 		
 		JPanel vehiclesView = createViewPanel(new JTable(new VehiclesTableModel(_ctrl)), "Vehicles");
