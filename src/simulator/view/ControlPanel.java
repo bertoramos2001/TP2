@@ -99,7 +99,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		weatherButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/weather.png")));
 		weatherButton.setToolTipText("Change Weather of a Road");
 		myToolBar.add(weatherButton);
-		//listener del boton
+		weatherButton.addActionListener((e) -> {
+			selectWeather();
+		});
 		
 		myToolBar.addSeparator();
 		
@@ -145,6 +147,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		myToolBar.setMargin(new Insets(5, 5, 5, 5));
 	}
 	
+		
+
 		private void loadFile(JFileChooser fc) throws IOException {
 			int i = fc.showOpenDialog(this);
 			if (i == JFileChooser.APPROVE_OPTION) {
@@ -164,6 +168,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			if (status != 0) {
 				//asignar la contaminacion al coche pedido por el usuario
 			}
+			
+		}
+		
+		private void selectWeather() {
+			ChangeWeatherDialog wDialog = new ChangeWeatherDialog(this);
+			
 			
 		}
 		
