@@ -185,9 +185,9 @@ public class Main {
 		initFactories();
 		parseArgs(args);
 
-		if (startUpMode == "console") {
+		if (startUpMode.equalsIgnoreCase("console")) {
 			startBatchMode();
-		} else if (startUpMode == "gui"){
+		} else if (startUpMode.equalsIgnoreCase("gui")) {
 			startGUIMode();
 		} else {
 			throw new IOException("Startup mode is not valid. Must be gui or console");
