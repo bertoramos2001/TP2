@@ -71,12 +71,14 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	public void addObserver(TrafficSimObserver o) {
 		//TODO: no se por que aqui me da error
 		//System.out.println(o.toString());
-		observerList.add(o);
+		if(!observerList.contains(o))
+			observerList.add(o);
 	}
 
 	@Override
 	public void removeObserver(TrafficSimObserver o) {
-		observerList.remove(o);
+		if(observerList.contains(o))
+			observerList.remove(o);
 	}
 	
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
