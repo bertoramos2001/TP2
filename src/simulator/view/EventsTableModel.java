@@ -16,9 +16,11 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	
 	private List<Event> events;
 	private String[] _colNames = { "Time", "Desc." };
+	private Controller ctrl;
 	
-	public EventsTableModel(Controller ctrl) {
+	public EventsTableModel(Controller _ctrl) {
 		events = new ArrayList<Event>();
+		ctrl = _ctrl;
 		ctrl.addObserver(this);
 	}
 
@@ -26,6 +28,12 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		// We need to notify changes, otherwise the table does not refresh.
 		fireTableDataChanged();	
 	}
+	
+	public void setEventsList(List<Event> events) {	
+		this.events = events;
+		update();
+	}
+	
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
@@ -39,14 +47,14 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 
 	@Override
-	// método obligatorio
+	// mÃ©todo obligatorio
 	// this is for the number of columns
 	public int getColumnCount() {
 		return _colNames.length;
 	}
 
 	@Override
-	// método obligatorio
+	// mÃ©todo obligatorio
 	// the number of row, like those in the events list
 	public int getRowCount() {
 		return events.size();
@@ -70,31 +78,31 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
+		setEventsList(events);
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setEventsList(events);
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		events.add(e);
-		update();
+		// TODO Auto-generated method stub		
+		setEventsList(events);
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setEventsList(events);
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setEventsList(events);
 	}
 
 	@Override
