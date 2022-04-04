@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -19,9 +20,11 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	
 	private List<Junction> junctions;
 	private String[] colNames = { "id", "Green", "Queues"};
+	private Controller ctrl;
 	
-	public JunctionsTableModel(Controller ctrl) {
-		junctions = null;
+	public JunctionsTableModel(Controller _ctrl) {
+		junctions = new ArrayList<Junction>();
+		ctrl = _ctrl;
 		ctrl.addObserver(this);
 	}
 	
@@ -74,31 +77,31 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setJunctionsList(map.getJunctions());		
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		// TODO Auto-generated method stub
-		
+		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
