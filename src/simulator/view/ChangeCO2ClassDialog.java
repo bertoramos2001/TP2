@@ -1,8 +1,6 @@
 package simulator.view;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.*;
@@ -21,7 +19,6 @@ public class ChangeCO2ClassDialog extends JDialog {
 	private int status;
 	
 	public ChangeCO2ClassDialog(ControlPanel controlPanel) {
-		//TODO: controlPanel va en el constructor? hay que llamar a super con el controlPanel?
 		initGUI();
 	}
 	
