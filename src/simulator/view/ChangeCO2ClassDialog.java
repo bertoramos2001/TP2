@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.util.List;
 
 import javax.swing.*;
@@ -16,9 +17,11 @@ public class ChangeCO2ClassDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JComboBox<Vehicle> vehicles;
 	private DefaultComboBoxModel<Vehicle> vehiclesModel;
+	private JComboBox<Integer> contClass;
 	private int status;
 	
-	public ChangeCO2ClassDialog(ControlPanel controlPanel) {
+	public ChangeCO2ClassDialog(Frame parent) {
+		super(parent, true);
 		initGUI();
 	}
 	
@@ -57,7 +60,8 @@ public class ChangeCO2ClassDialog extends JDialog {
 		
 		JLabel CO2Label = new JLabel("CO2 Class: ");
 		middlePanel.add(CO2Label);
-		//TODO: falta añadir el combo box de co2 class
+		contClass = new JComboBox<>(new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+		middlePanel.add(contClass);
 		
 		JLabel ticksLabel = new JLabel("Ticks: ");
 		middlePanel.add(ticksLabel);
@@ -81,12 +85,11 @@ public class ChangeCO2ClassDialog extends JDialog {
 		buttonsPanel.add(okButton);
 		
 		
-		
 		setLocation(300, 300);
 		setSize(500, 200);
-		setResizable(false);
-		setVisible(true);
 		pack();
+		setResizable(false);
+		setVisible(false);
 	}
 	
 	public int open(List<Vehicle> vehicles) {
@@ -94,7 +97,7 @@ public class ChangeCO2ClassDialog extends JDialog {
 		for (Vehicle v : vehicles)
 			vehiclesModel.addElement(v);
 
-		setLocation(getParent().getLocation().x + 10, getParent().getLocation().y + 10);
+		setLocation(getParent().getLocation().x + ((getParent().getWidth() / 2) - (getWidth() /2)), getParent().getLocation().y + ((getParent().getHeight() / 2) - (getHeight() /2)));
 
 		setVisible(true);
 		return status;

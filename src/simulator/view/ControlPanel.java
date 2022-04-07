@@ -165,21 +165,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		}
 		
 		private void selectCont() {
-			ChangeCO2ClassDialog dialog = new ChangeCO2ClassDialog(this);
-			//int status = dialog.open(new ArrayList<Vehicle>());
-			int status = 0;
-			//TODO: esta bien usar aqui vehicle e importarlo a esta clase? Tener un atributo map?
-			//status = dialog.open(map.getVehicles());
+			ChangeCO2ClassDialog contDialog = new ChangeCO2ClassDialog((Frame)SwingUtilities.getWindowAncestor(this));
+			int status = map != null ? contDialog.open(map.getVehicles()) : 0;
 			
 			if (status != 0) {
-				//asignar la contaminacion al coche pedido por el usuario
+				//TODO: asignar la contaminacion al coche pedido por el usuario
 			}
 			
 		}
 		
 		private void selectWeather() {
-			ChangeWeatherDialog wDialog = new ChangeWeatherDialog(this);
-			
+			ChangeWeatherDialog wDialog = new ChangeWeatherDialog((Frame)SwingUtilities.getWindowAncestor(this));
+			int status = map != null ? wDialog.open(map.getRoads()) : 0;
 			
 		}
 		

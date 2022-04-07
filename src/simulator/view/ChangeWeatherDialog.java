@@ -1,6 +1,7 @@
 package simulator.view;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.util.List;
 
 import javax.swing.Box;
@@ -26,8 +27,8 @@ public class ChangeWeatherDialog extends JDialog{
 	private DefaultComboBoxModel<Weather> weatherModel;
 	private int status;
 	
-	public ChangeWeatherDialog(ControlPanel controlPanel) {
-		//TODO: controlPanel va en el constructor? hay que llamar a super con el controlPanel?
+	public ChangeWeatherDialog(Frame parent) {
+		super(parent, true);
 		initGUI();
 	}
 	
@@ -67,8 +68,8 @@ public class ChangeWeatherDialog extends JDialog{
 		JLabel weatherLabel = new JLabel("Weather: ");
 		middlePanel.add(weatherLabel);
 		roadsModel = new DefaultComboBoxModel<>();
-		roads = new JComboBox<>(roadsModel);
-		middlePanel.add(roads);
+		weather = new JComboBox<>(Weather.values());
+		middlePanel.add(weather);
 		
 		
 		JLabel ticksLabel = new JLabel("Ticks: ");
@@ -96,9 +97,9 @@ public class ChangeWeatherDialog extends JDialog{
 		
 		setLocation(300, 300);
 		setSize(500, 200);
-		setResizable(false);
-		setVisible(true);
 		pack();
+		setResizable(false);
+		setVisible(false);
 				
 	}
 	
@@ -107,7 +108,7 @@ public class ChangeWeatherDialog extends JDialog{
 		for (Road v : roads)
 			roadsModel.addElement(v);
 
-		setLocation(getParent().getLocation().x + 10, getParent().getLocation().y + 10);
+		setLocation(getParent().getLocation().x + ((getParent().getWidth() / 2) - (getWidth() /2)), getParent().getLocation().y + ((getParent().getHeight() / 2) - (getHeight() /2)));
 
 		setVisible(true);
 		return status;
