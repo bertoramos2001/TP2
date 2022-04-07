@@ -20,6 +20,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private static final long serialVersionUID = 1L;
 	private Controller ctrl;
 	private boolean stopped;
+	private RoadMap map;
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
@@ -29,31 +30,32 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+	
+		this.map = map;
 		
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+		this.map = map;
 		
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
+		this.map = map;
 		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+		this.map = map;
 		
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+		this.map = map;
 		
 	}
 
@@ -112,6 +114,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		playButton.setToolTipText("Run the simulator");
 		myToolBar.add(playButton);
 		playButton.addActionListener((e) -> {
+			stopped = false;
 			run_sim((Integer)contTicks.getValue());
 		});
 		
@@ -148,7 +151,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 	
 		
-
 		private void loadFile(JFileChooser fc) throws IOException {
 			int i = fc.showOpenDialog(this);
 			if (i == JFileChooser.APPROVE_OPTION) {
@@ -188,7 +190,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void run_sim(int n) {
 			if (n > 0 && !stopped) {
 				try {
-					ctrl.run(1);
+					ctrl.run(n, System.out);
+					
 				} catch (Exception e) {
 					// TODO show error message
 					stopped = true;
