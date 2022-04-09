@@ -62,45 +62,45 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
-			s = rowIndex;
-			break;
-		case 1:
 			s = junctions.get(rowIndex).getId();
 			break;
-		case 2:
+		case 1:
 			s = junctions.get(rowIndex).getGreenLightIndex();
+			if(s.equals(-1))
+				s = "NONE";	
 			break;
-		}
+		case 2:
+			s = junctions.get(rowIndex).getInRoads();
+			if(s.equals("[]"))
+				s = "";
+
+			break;
+		}	
 		return s;
 	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setJunctionsList(map.getJunctions());		
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
 		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setJunctionsList(map.getJunctions());
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setJunctionsList(map.getJunctions());
 	}
 
