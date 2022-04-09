@@ -61,30 +61,27 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
-			s = rowIndex;
-			break;
-		case 1:
 			s = vehicles.get(rowIndex).getId();
 			break;
-		case 2:
-			s = vehicles.get(rowIndex).getLocation();
+		case 1:	
+			s = vehicles.get(rowIndex).getRoad() + ":" + vehicles.get(rowIndex).getLocation();
 			break;
-		case 3:
+		case 2:
 			s = vehicles.get(rowIndex).getItinerary();
 			break;
-		case 4:
+		case 3:
 			s = vehicles.get(rowIndex).getContClass();
 			break;
-		case 5:
+		case 4:
 			s = vehicles.get(rowIndex).getMaxSpeed();
 			break;
-		case 6:
+		case 5:
 			s = vehicles.get(rowIndex).getSpeed();
 			break;
-		case 7:
+		case 6:
 			s = vehicles.get(rowIndex).getTotalCO2();
 			break;
-		case 8:
+		case 7:
 			s = vehicles.get(rowIndex).getDistance();
 			break;
 		}
@@ -93,31 +90,26 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setVehiclesList(map.getVehicles());
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setVehiclesList(map.getVehicles());
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
 		setVehiclesList(map.getVehicles());
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setVehiclesList(map.getVehicles());	
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		setVehiclesList(map.getVehicles());
 	}
 
