@@ -30,6 +30,8 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		time++;
 		int aux = 0;
 		
+		onAdvanceStart(roadMap, eventList, time);
+		
 		while (aux < eventList.size() && time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
 			eventList.get(aux).execute(roadMap);
 			aux++;
@@ -49,7 +51,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 			r.advance(time);
 		}
 		
-		onAdvanceStart(roadMap, eventList, time);
+		onAdvanceEnd(roadMap, eventList, time);
 	
 	}
 	
