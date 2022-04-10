@@ -26,7 +26,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		onEventAdded(roadMap, eventList, e, time);
 	}
 	
-	public void advance() {
+	public void advance() { 
 		time++;
 		int aux = 0;
 		
