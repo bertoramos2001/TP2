@@ -134,6 +134,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		myToolBar.add(ticks);
 		
 		contTicks.setMaximumSize(new Dimension(50, 50));
+		contTicks.setToolTipText("Simulation tick to run: 1-1000");
 		myToolBar.add(contTicks);
 		
 		myToolBar.add(Box.createGlue());

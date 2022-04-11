@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JLabel timeLabel = new JLabel();
-	private JPanel statusPanel = new JPanel();
+	private JLabel eventLabel = new JLabel();
 
 	StatusBar(Controller ctrl) {
 		ctrl.addObserver(this);
@@ -25,13 +26,20 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 	
 	private void initGUI() {
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel statusPanel = new JPanel();
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		statusPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		this.add(statusPanel);
+		
 	
 		showTime(0);
 		statusPanel.add(timeLabel);
+		statusPanel.add(Box.createRigidArea(new Dimension(125, 25)));
+		statusPanel.add(new JSeparator(SwingConstants.VERTICAL));
+		showEvent(null);
+		statusPanel.add(eventLabel);
 		
-		//TODO: falta poner el get time y el getEvent
 
 	}
 	
@@ -39,38 +47,43 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		timeLabel.setText("Time: "+time);
 	}
 	
+	private void showEvent(Event e) {
+		if (e != null) {
+			eventLabel.setText("Event added "+e.toString());
+		} else {
+			eventLabel.setText("");
+		}
+	}
+	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		showTime(time);
-		
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
 		showTime(time);
+		showEvent(null);
 		
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		// TODO Auto-generated method stub
-		showTime(time);
+		showEvent(e);
 		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		showTime(time);
 		
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		showTime(time);
 		
 	}
 
