@@ -28,5 +28,18 @@ public class SetContClassEvent extends Event {
 			v.setContClass(c.getSecond());
 		}
 	}
+	
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("Change Cont Class: [");
+		
+		for (Pair<String, Integer> e : cs) {
+			str.append("(" + e.getFirst() + ", " + e.getSecond() + "), ");
+		}
+		str.append("]");
+		
+		
+		return str.toString();
+	}
 
 }

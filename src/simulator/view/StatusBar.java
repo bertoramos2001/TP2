@@ -1,7 +1,6 @@
 package simulator.view;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.*;
@@ -39,6 +38,8 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		statusPanel.add(new JSeparator(SwingConstants.VERTICAL));
 		showEvent(null);
 		statusPanel.add(eventLabel);
+		statusPanel.add(Box.createHorizontalGlue());
+		//TODO: aun se muestran raros los eventos
 		
 
 	}
