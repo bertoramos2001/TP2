@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -27,6 +28,7 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	private static final Color _JUNCTION_LABEL_COLOR = new Color(200, 100, 0);
 	private static final Color _GREEN_LIGHT_COLOR = Color.GREEN;
 	private static final Color _RED_LIGHT_COLOR = Color.RED;
+	private static final Color _ROAD_COLOR = Color.BLACK;
 	
 	private Image car;
 	private RoadMap map;
@@ -63,23 +65,26 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	private void drawMap(Graphics g) {
 		drawRoads(g);
 		drawVehicles(g);
-		drawWeather();
-		drawContClass();
 	}
 	
 	private void drawRoads(Graphics g) {
-		for (Road r : map.getRoads()) {
+		for (int i = 0; i < map.getRoads().size(); i++) {
 			// the road goes from (x1,y) to (x2,y)
-			int x1 = r.getSrc().getX();
-			int x2 = r.getDest().getX();
-			int y = r.getSrc().getY();
+			int x1 = 50;
+			int x2 = getWidth() - 100;
+			int y = (i+1) * 50;
 			
 			// choose a color for the junction depending on the traffic light of the road
 			Color destJunctColor = _RED_LIGHT_COLOR;
-			int idx = r.getDest().getGreenLightIndex();
-			if (idx != -1 && r.equals(r.getDest().getInRoads().get(idx))) {
+			int idx = map.getRoads().get(i).getDest().getGreenLightIndex();
+			if (idx != -1 && map.getRoads().get(i).equals(map.getRoads().get(i).getDest().getInRoads().get(idx))) {
 				destJunctColor = _GREEN_LIGHT_COLOR;
 			}
+			
+			// draw the lines representing the roads
+			g.setColor(_ROAD_COLOR);
+			g.drawString(map.getRoads().get(i).getId(), x1 - 30, y + 5);
+			g.drawLine(x1, y, x2, y);
 			
 			// draw a blue colored circle at the beginning of the road (the source junction)
 			g.setColor(_JUNCTION_COLOR);
@@ -89,7 +94,37 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 			g.setColor(destJunctColor);
 			g.fillOval(x2 - _JRADIUS / 2, y - _JRADIUS / 2, _JRADIUS, _JRADIUS);
 			
-			g.drawLine(x1, y, x2, y);
+			//draw weather icon depending on weather of the road
+			Image weatherImg;
+			switch(map.getRoads().get(i).getWeather()) {
+				case SUNNY: {
+					weatherImg = loadImage("sun.png");
+				}
+				break;
+				case CLOUDY: {
+					weatherImg = loadImage("cloud.png");
+				}
+				break;
+				case RAINY: {
+					weatherImg = loadImage("rain.png");
+				}
+				break;
+				case WINDY: {
+					weatherImg = loadImage("wind.png");
+				}
+				break;
+				default: {
+					weatherImg = loadImage("storm.png");
+				}
+				
+			}
+			g.drawImage(weatherImg, x2 + 10, y - 15, 32, 32, this);
+			
+			//draw contamination icon depending on the current contamination of the road
+			int c = (int) Math.floor(Math.min((double) map.getRoads().get(i).getTotalCO2()/(1.0 + (double) map.getRoads().get(i).getContLimit()),1.0) / 0.19);
+			Image contImg = loadImage("cont_"+c+".png");
+			g.drawImage(contImg, x2 + 47, y - 15, 32, 32, this);
+			
 		}
 	}
 	
@@ -97,34 +132,33 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 		
 	}
 	
-	private void drawWeather() {
-		
-	}
-	
-	private void drawContClass() {
-		
-	}
-	
 	// loads an image from a file
-		private Image loadImage(String img) {
-			Image i = null;
-			try {
-				return ImageIO.read(new File("resources/icons/" + img));
-			} catch (IOException e) {
-			}
-			return i;
+	private Image loadImage(String img) {
+		Image i = null;
+		try {
+			return ImageIO.read(new File("resources/icons/" + img));
+		} catch (IOException e) {
 		}
+		return i;
+	}
+		
+	public void update(RoadMap map) {
+		SwingUtilities.invokeLater(() -> {
+			this.map = map;
+			repaint();
+		});
+	}
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		update(map);
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		update(map);
 	}
 
 	@Override
@@ -136,13 +170,13 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		update(map);
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		update(map);
 	}
 
 	@Override
