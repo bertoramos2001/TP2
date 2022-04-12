@@ -4,13 +4,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
 import simulator.control.Controller;
+import simulator.misc.Pair;
 import simulator.model.Event;
 import simulator.model.RoadMap;
+import simulator.model.SetContClassEvent;
 import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
@@ -21,6 +24,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private Controller ctrl;
 	private boolean stopped;
 	private RoadMap map;
+	private int time;
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
@@ -30,37 +34,32 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		this.map = map;
-		
+		this.time = time;
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		this.map = map;
-		
+		this.time = time;
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
 		this.map = map;
-		
+		this.time = time;
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		this.map = map;
-		
+		this.time = time;
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		this.map = map;
-		
+		this.time = time;
 	}
 
 	@Override
@@ -118,6 +117,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		playButton.setToolTipText("Run the simulator");
 		myToolBar.add(playButton);
 		playButton.addActionListener((e) -> {
+			
+			stopped = false;
 			run_sim((Integer)contTicks.getValue());
 		});
 		
@@ -170,7 +171,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			int status = map != null ? contDialog.open(map.getVehicles()) : 0;
 			
 			if (status != 0) {
-				//TODO: asignar la contaminacion al coche pedido por el usuario
+				List<Pair<String, Integer>> cs = new ArrayList<>();
+				cs.add(new Pair<String, Integer>(contDialog.getVehicle().getId(), contDialog.getContClass()));
+				ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
 			}
 			
 		}
