@@ -14,7 +14,9 @@ import simulator.misc.Pair;
 import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.SetContClassEvent;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Weather;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
 	/**
@@ -181,6 +183,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void selectWeather() {
 			ChangeWeatherDialog wDialog = new ChangeWeatherDialog((Frame)SwingUtilities.getWindowAncestor(this));
 			int status = map != null ? wDialog.open(map.getRoads()) : 0;
+			
+			if (status != 0) {
+				List<Pair<String, Weather>> cs = new ArrayList<>();
+				cs.add(new Pair<String, Weather>(wDialog.getRoad().getId(), wDialog.getWeatherClass()));
+				ctrl.addEvent(new SetWeatherEvent(wDialog.getTime() + time, cs));
+			}
 			
 		}
 		
