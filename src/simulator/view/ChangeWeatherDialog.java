@@ -16,6 +16,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import simulator.model.Road;
+import simulator.model.Vehicle;
 import simulator.model.Weather;
 
 public class ChangeWeatherDialog extends JDialog{
@@ -26,6 +27,7 @@ public class ChangeWeatherDialog extends JDialog{
 	private JComboBox<Weather> weather;
 	private DefaultComboBoxModel<Weather> weatherModel;
 	private int status;
+	private JSpinner contTicks;
 	
 	public ChangeWeatherDialog(Frame parent) {
 		super(parent, true);
@@ -67,7 +69,6 @@ public class ChangeWeatherDialog extends JDialog{
 		
 		JLabel weatherLabel = new JLabel("Weather: ");
 		middlePanel.add(weatherLabel);
-		roadsModel = new DefaultComboBoxModel<>();
 		weather = new JComboBox<>(Weather.values());
 		middlePanel.add(weather);
 		
@@ -75,7 +76,7 @@ public class ChangeWeatherDialog extends JDialog{
 		JLabel ticksLabel = new JLabel("Ticks: ");
 		middlePanel.add(ticksLabel);
 		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+		contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
 		contTicks.setMaximumSize(new Dimension(20, 40));
 		middlePanel.add(contTicks);
 		
@@ -107,11 +108,25 @@ public class ChangeWeatherDialog extends JDialog{
 		roadsModel.removeAllElements();
 		for (Road v : roads)
 			roadsModel.addElement(v);
+		
 
 		setLocation(getParent().getLocation().x + ((getParent().getWidth() / 2) - (getWidth() /2)), getParent().getLocation().y + ((getParent().getHeight() / 2) - (getHeight() /2)));
 
 		setVisible(true);
 		return status;
 	}
+	
+	public Road getRoad() {
+		return (Road) roadsModel.getSelectedItem();
+	}
+
+	public Weather getWeatherClass() {
+		return  (Weather) weatherModel.getSelectedItem();
+	}
+	
+	public Integer getTime() {
+		return (Integer) contTicks.getValue();
+	}
+	
 	
 }
