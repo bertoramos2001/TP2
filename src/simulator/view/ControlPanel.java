@@ -27,6 +27,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private boolean stopped;
 	private RoadMap map;
 	private int time;
+	
+	private JButton contClassButton;
+	private JToolBar myToolBar;
+	private JButton folderButton;
+	private JButton weatherButton;
+	
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
@@ -75,13 +81,13 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		this.add(controlPanel);
 		
-		JToolBar myToolBar = new JToolBar();
+		myToolBar = new JToolBar();
 		controlPanel.add(myToolBar);
 		
 		JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("./resources/examples"));
 		
-		JButton folderButton = new JButton();
+		folderButton = new JButton();
 		folderButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/open.png")));
 		folderButton.setToolTipText("Open a file");
 		myToolBar.add(folderButton);
@@ -94,7 +100,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		myToolBar.addSeparator();
 		
-		JButton contClassButton = new JButton();
+		contClassButton = new JButton();
 		contClassButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/co2class.png")));
 		contClassButton.setToolTipText("Change CO2 Class of a Vehicle");
 		myToolBar.add(contClassButton);
@@ -102,7 +108,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			selectCont();
 		});
 		
-		JButton weatherButton = new JButton();
+		weatherButton = new JButton();
 		weatherButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/weather.png")));
 		weatherButton.setToolTipText("Change Weather of a Road");
 		myToolBar.add(weatherButton);
@@ -119,7 +125,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		playButton.setToolTipText("Run the simulator");
 		myToolBar.add(playButton);
 		playButton.addActionListener((e) -> {
-			
+			enableToolBar(false);
 			stopped = false;
 			run_sim((Integer)contTicks.getValue());
 		});
@@ -193,11 +199,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		}
 		
 		private void enableToolBar(boolean enabled) {
-			if (enabled) {
-				//TODO: se ven los botones
-			} else {
-				//se inhabilitan los botones
-			}
+			folderButton.setEnabled(enabled);
+			contClassButton.setEnabled(enabled);
+			weatherButton.setEnabled(enabled);					
 		}
 		
 		private void run_sim(int n) {
