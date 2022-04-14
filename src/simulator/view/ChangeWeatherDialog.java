@@ -69,6 +69,7 @@ public class ChangeWeatherDialog extends JDialog{
 		
 		JLabel weatherLabel = new JLabel("Weather: ");
 		middlePanel.add(weatherLabel);
+		weatherModel = new DefaultComboBoxModel<Weather>();
 		weather = new JComboBox<>(Weather.values());
 		middlePanel.add(weather);
 		
