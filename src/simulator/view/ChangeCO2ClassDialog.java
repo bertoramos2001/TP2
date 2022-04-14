@@ -1,220 +1,123 @@
+
 package simulator.view;
 
-import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.util.List;
 
 import javax.swing.*;
 
-import simulator.control.Controller;
-import simulator.misc.Pair;
-import simulator.model.Event;
-import simulator.model.RoadMap;
-import simulator.model.SetContClassEvent;
-import simulator.model.TrafficSimObserver;
+import simulator.model.Road;
+import simulator.model.Vehicle;
+import simulator.model.Weather;
 
-public class ControlPanel extends JPanel implements TrafficSimObserver {
+
+public class ChangeCO2ClassDialog extends JDialog {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Controller ctrl;
-	private boolean stopped;
-	private RoadMap map;
-	private int time;
+	private JComboBox<Vehicle> vehicles;
+	private DefaultComboBoxModel<Vehicle> vehiclesModel;
+	private JComboBox<Integer> contClass;
+	private int status;
+	
+	private JSpinner contTicks;
 
-	ControlPanel(Controller ctrl) {
-		this.ctrl = ctrl;
-		ctrl.addObserver(this);
+	public ChangeCO2ClassDialog(Frame parent) {
+		super(parent, true);
 		initGUI();
 	}
-	
-	@Override
-	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		this.map = map;
-		this.time = time;
+
+
+	private void initGUI() {
+		status = 0;
+
+		setTitle("Change CO2 Class");
+		
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		setContentPane(mainPanel);
+
+		JLabel infoMsg = new JLabel("Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now");
+		infoMsg.setAlignmentX(CENTER_ALIGNMENT);
+		mainPanel.add(infoMsg);
+		
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		JPanel middlePanel = new JPanel();
+		middlePanel.setAlignmentX(CENTER_ALIGNMENT);
+		mainPanel.add(middlePanel);
+		
+		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		JPanel buttonsPanel = new JPanel();
+		middlePanel.setAlignmentX(CENTER_ALIGNMENT);
+		mainPanel.add(buttonsPanel);
+		
+		JLabel vehicleLabel = new JLabel("Vehicle: ");
+		middlePanel.add(vehicleLabel);
+
+		vehiclesModel = new DefaultComboBoxModel<>();
+		vehicles = new JComboBox<>(vehiclesModel);
+		middlePanel.add(vehicles);
+
+		JLabel CO2Label = new JLabel("CO2 Class: ");
+		middlePanel.add(CO2Label);
+		contClass = new JComboBox<>(new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+		middlePanel.add(contClass);
+
+		JLabel ticksLabel = new JLabel("Ticks: ");
+		middlePanel.add(ticksLabel);
+
+		contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+		contTicks.setMaximumSize(new Dimension(20, 40));
+		middlePanel.add(contTicks);
+
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener((e) -> {
+			status = 0;
+			setVisible(false);
+		});
+		buttonsPanel.add(cancelButton);
+
+		JButton okButton = new JButton("OK");
+		okButton.addActionListener((e) -> {
+			status = 1;
+			setVisible(false);
+		});
+		buttonsPanel.add(okButton);
+
+
+		setLocation(300, 300);
+		setSize(500, 200);
+		pack();
+		setResizable(false);
+		setVisible(false);
 	}
 
-	@Override
-	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		this.map = map;
-		this.time = time;
-	}
+	public int open(List<Vehicle> vehicles) {
+		vehiclesModel.removeAllElements();
+		for (Vehicle v : vehicles)
+			vehiclesModel.addElement(v);
 
-	@Override
-	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		this.map = map;
-		this.time = time;
-	}
+		setLocation(getParent().getLocation().x + ((getParent().getWidth() / 2) - (getWidth() /2)), getParent().getLocation().y + ((getParent().getHeight() / 2) - (getHeight() /2)));
 
-	@Override
-	public void onReset(RoadMap map, List<Event> events, int time) {
-		this.map = map;
-		this.time = time;
-	}
-
-	@Override
-	public void onRegister(RoadMap map, List<Event> events, int time) {
-		this.map = map;
-		this.time = time;
-	}
-
-	@Override
-	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	 private void initGUI() {
-		this.setLayout(new BorderLayout());
-		JPanel controlPanel = new JPanel(new BorderLayout());
-		this.add(controlPanel);
-		
-		JToolBar myToolBar = new JToolBar();
-		controlPanel.add(myToolBar);
-		
-		JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("./resources/examples"));
-		
-		JButton folderButton = new JButton();
-		folderButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/open.png")));
-		folderButton.setToolTipText("Open a file");
-		myToolBar.add(folderButton);
-		//TODO: ver si esta gestión de errores ha de estar aqui
-		folderButton.addActionListener((e) -> {try {
-			loadFile(fc);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}});
-		
-		myToolBar.addSeparator();
-		
-		JButton contClassButton = new JButton();
-		contClassButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/co2class.png")));
-		contClassButton.setToolTipText("Change CO2 Class of a Vehicle");
-		myToolBar.add(contClassButton);
-		contClassButton.addActionListener((e) -> {
-			selectCont();
-		});
-		
-		JButton weatherButton = new JButton();
-		weatherButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/weather.png")));
-		weatherButton.setToolTipText("Change Weather of a Road");
-		myToolBar.add(weatherButton);
-		weatherButton.addActionListener((e) -> {
-			selectWeather();
-		});
-		
-		myToolBar.addSeparator();
-		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
-		
-		JButton playButton = new JButton();
-		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
-		playButton.setToolTipText("Run the simulator");
-		myToolBar.add(playButton);
-		playButton.addActionListener((e) -> {
-			
-			stopped = false;
-			run_sim((Integer)contTicks.getValue());
-		});
-		
-		JButton stopButton = new JButton();
-		stopButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/stop.png")));
-		stopButton.setToolTipText("Stop the simulator");
-		myToolBar.add(stopButton);
-		stopButton.addActionListener((e) -> {
-			stop();
-		});
-		//listener del boton
-		
-		JLabel ticks = new JLabel("Ticks");
-		myToolBar.add(ticks);
-		
-		contTicks.setMaximumSize(new Dimension(50, 50));
-		contTicks.setToolTipText("Simulation tick to run: 1-1000");
-		myToolBar.add(contTicks);
-		
-		myToolBar.add(Box.createGlue());
-		myToolBar.addSeparator();
-		
-		JButton exitButton = new JButton();
-		exitButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/exit.png")));
-		exitButton.setToolTipText("Exit the simulator");
-		myToolBar.add(exitButton);
-		exitButton.addActionListener((e) -> {
-			int confirm = JOptionPane.showConfirmDialog(null, "Do you want to exit program?");
-			if (confirm == JOptionPane.YES_OPTION) {
-				System.exit(0);
-			}
-		});
-		
-		myToolBar.setMargin(new Insets(5, 5, 5, 5));
+		setVisible(true);
+		return status;
 	}
 	
-		
+	public Vehicle getVehicle() {
+		return (Vehicle) vehiclesModel.getSelectedItem();
+	}
 
-		private void loadFile(JFileChooser fc) throws IOException {
-			int i = fc.showOpenDialog(this);
-			if (i == JFileChooser.APPROVE_OPTION) {
-				ctrl.reset();
-				ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
-				System.out.println(fc.getSelectedFile());
-			}
-		}
-		
-		private void selectCont() {
-			ChangeCO2ClassDialog contDialog = new ChangeCO2ClassDialog((Frame)SwingUtilities.getWindowAncestor(this));
-			int status = map != null ? contDialog.open(map.getVehicles()) : 0;
-			
-			if (status != 0) {
-				List<Pair<String, Integer>> cs = new ArrayList<>();
-				cs.add(new Pair<String, Integer>(contDialog.getVehicle().getId(), contDialog.getContClass()));
-				ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
-			}
-			
-		}
-		
-		private void selectWeather() {
-			ChangeWeatherDialog wDialog = new ChangeWeatherDialog((Frame)SwingUtilities.getWindowAncestor(this));
-			int status = map != null ? wDialog.open(map.getRoads()) : 0;
-			
-		}
-		
-		private void enableToolBar(boolean enabled) {
-			if (enabled) {
-				//TODO: se ven los botones
-			} else {
-				//se inhabilitan los botones
-			}
-		}
-		
-		private void run_sim(int n) {
-			if (n > 0 && !stopped) {
-				try {
-					ctrl.run(1);
-				} catch (Exception e) {
-					// TODO show error message
-					stopped = true;
-					return;
-				}
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						run_sim(n - 1);
-					}
-				});
-			} else {
-				enableToolBar(true);
-				stopped = true;
-			}
-		}
-		
-		private void stop() {
-			stopped = true;
-		}
+	public Integer getContClass() {
+		return  (Integer) contClass.getSelectedItem();
+	}
+	
+	public Integer getTime() {
+		return (Integer) contTicks.getValue();
+	}
 
 }
