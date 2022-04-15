@@ -1,6 +1,8 @@
 package simulator.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.*;
@@ -26,20 +28,24 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	
 	private void initGUI() {
 		JPanel statusPanel = new JPanel();
-		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		//statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		statusPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.add(statusPanel);
 		
 	
 		showTime(0);
 		statusPanel.add(timeLabel);
 		statusPanel.add(Box.createRigidArea(new Dimension(125, 25)));
-		statusPanel.add(new JSeparator(SwingConstants.VERTICAL));
+		//TODO: por alguna razon, este separador no se muestra
+		JSeparator sep = new JSeparator(JSeparator.VERTICAL);
+		sep.setPreferredSize(new Dimension(5, 1));
+		System.out.println(sep.getPreferredSize());
+		statusPanel.add(sep);
 		showEvent(null);
 		statusPanel.add(eventLabel);
-		statusPanel.add(Box.createHorizontalGlue());
-		//TODO: aun se muestran raros los eventos
 		
 
 	}
@@ -79,7 +85,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
 		// TODO Auto-generated method stub
-		
+		showTime(time);
 	}
 
 	@Override

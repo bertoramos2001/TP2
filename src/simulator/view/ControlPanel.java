@@ -170,7 +170,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			if (i == JFileChooser.APPROVE_OPTION) {
 				ctrl.reset();
 				ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
-				System.out.println(fc.getSelectedFile());
 			}
 		}
 		

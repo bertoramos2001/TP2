@@ -13,6 +13,7 @@ import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Vehicle;
 
 public class MapByRoadComponent extends JComponent implements TrafficSimObserver {
 
@@ -64,7 +65,6 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	
 	private void drawMap(Graphics g) {
 		drawRoads(g);
-		drawVehicles(g);
 	}
 	
 	private void drawRoads(Graphics g) {
@@ -73,30 +73,39 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 			int x1 = 50;
 			int x2 = getWidth() - 100;
 			int y = (i+1) * 50;
+			Road actualRoad = map.getRoads().get(i);
 			
 			// choose a color for the junction depending on the traffic light of the road
 			Color destJunctColor = _RED_LIGHT_COLOR;
-			int idx = map.getRoads().get(i).getDest().getGreenLightIndex();
-			if (idx != -1 && map.getRoads().get(i).equals(map.getRoads().get(i).getDest().getInRoads().get(idx))) {
+			int idx = actualRoad.getDest().getGreenLightIndex();
+			if (idx != -1 && actualRoad.equals(actualRoad.getDest().getInRoads().get(idx))) {
 				destJunctColor = _GREEN_LIGHT_COLOR;
 			}
 			
 			// draw the lines representing the roads
 			g.setColor(_ROAD_COLOR);
-			g.drawString(map.getRoads().get(i).getId(), x1 - 30, y + 5);
+			g.drawString(actualRoad.getId(), x1 - 30, y + 5);
 			g.drawLine(x1, y, x2, y);
 			
 			// draw a blue colored circle at the beginning of the road (the source junction)
 			g.setColor(_JUNCTION_COLOR);
 			g.fillOval(x1 - _JRADIUS / 2, y - _JRADIUS / 2, _JRADIUS, _JRADIUS);
+			g.setColor(_JUNCTION_LABEL_COLOR);
+			g.drawString(actualRoad.getSrc().getId(), x1 - 5, y - 15);
+			
 			
 			// draw a red or green colored circle at the end of the road (the dest junction)
 			g.setColor(destJunctColor);
 			g.fillOval(x2 - _JRADIUS / 2, y - _JRADIUS / 2, _JRADIUS, _JRADIUS);
+			g.setColor(_JUNCTION_LABEL_COLOR);
+			g.drawString(actualRoad.getDest().getId(), x2 - 5, y - 15);
+			
+			//draw the vehicles in the road
+			drawVehicles(g, x1, x2, y, actualRoad);
 			
 			//draw weather icon depending on weather of the road
 			Image weatherImg;
-			switch(map.getRoads().get(i).getWeather()) {
+			switch(actualRoad.getWeather()) {
 				case SUNNY: {
 					weatherImg = loadImage("sun.png");
 				}
@@ -121,15 +130,20 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 			g.drawImage(weatherImg, x2 + 10, y - 15, 32, 32, this);
 			
 			//draw contamination icon depending on the current contamination of the road
-			int c = (int) Math.floor(Math.min((double) map.getRoads().get(i).getTotalCO2()/(1.0 + (double) map.getRoads().get(i).getContLimit()),1.0) / 0.19);
+			int c = (int) Math.floor(Math.min((double) actualRoad.getTotalCO2()/(1.0 + (double) actualRoad.getContLimit()),1.0) / 0.19);
 			Image contImg = loadImage("cont_"+c+".png");
 			g.drawImage(contImg, x2 + 47, y - 15, 32, 32, this);
 			
 		}
 	}
 	
-	private void drawVehicles(Graphics g) {
-		
+	private void drawVehicles(Graphics g, int x1, int x2, int y, Road road) {
+		//paint all the vehicles in a road
+		for (Vehicle v : road.getVehicles()) {
+			int x = x1 + (int)((x2 - x1) *((double) v.getLocation() / (double) road.getLength()));
+			g.drawImage(car, x, y - 10, 16, 16, this);
+			g.drawString(v.getId(), x, y - 15);
+		}
 	}
 	
 	// loads an image from a file
@@ -164,7 +178,7 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
 		// TODO Auto-generated method stub
-		
+		update(map);
 	}
 
 	@Override

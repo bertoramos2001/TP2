@@ -69,7 +69,6 @@ public class ChangeWeatherDialog extends JDialog{
 		
 		JLabel weatherLabel = new JLabel("Weather: ");
 		middlePanel.add(weatherLabel);
-		weatherModel = new DefaultComboBoxModel<Weather>();
 		weather = new JComboBox<>(Weather.values());
 		middlePanel.add(weather);
 		
@@ -122,7 +121,7 @@ public class ChangeWeatherDialog extends JDialog{
 	}
 
 	public Weather getWeatherClass() {
-		return  (Weather) weatherModel.getSelectedItem();
+		return  (Weather) weather.getSelectedItem();
 	}
 	
 	public Integer getTime() {
