@@ -28,11 +28,11 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	
 	private void initGUI() {
 		JPanel statusPanel = new JPanel();
-		//statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-		statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		//statusPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		statusPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		//this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.add(statusPanel);
 		
 	
@@ -41,11 +41,12 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		statusPanel.add(Box.createRigidArea(new Dimension(125, 25)));
 		//TODO: por alguna razon, este separador no se muestra
 		JSeparator sep = new JSeparator(JSeparator.VERTICAL);
-		sep.setPreferredSize(new Dimension(5, 1));
-		System.out.println(sep.getPreferredSize());
+		Dimension size = new Dimension(5, 50);
+		sep.setMaximumSize(size);
 		statusPanel.add(sep);
-		showEvent(null);
+		eventLabel.setText("Welcome!");
 		statusPanel.add(eventLabel);
+		statusPanel.add(Box.createHorizontalGlue());
 		
 
 	}

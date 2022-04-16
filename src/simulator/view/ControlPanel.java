@@ -118,7 +118,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		myToolBar.addSeparator();
 		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
+		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
 		
 		JButton playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));

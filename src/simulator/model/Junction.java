@@ -165,6 +165,10 @@ public class Junction extends SimulatedObject {
 	public List<Road> getInRoads() {
 		return enteringRoadList;
 	}
+	
+	public List<List<Vehicle>> getQueueList() {
+		return queueList;
+	}
 
 }
 

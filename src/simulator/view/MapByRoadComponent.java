@@ -142,6 +142,7 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 		for (Vehicle v : road.getVehicles()) {
 			int x = x1 + (int)((x2 - x1) *((double) v.getLocation() / (double) road.getLength()));
 			g.drawImage(car, x, y - 10, 16, 16, this);
+			g.setColor(_GREEN_LIGHT_COLOR);
 			g.drawString(v.getId(), x, y - 15);
 		}
 	}

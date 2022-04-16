@@ -31,12 +31,20 @@ public class SetContClassEvent extends Event {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("Change Cont Class: [");
 		
-		for (Pair<String, Integer> e : cs) {
-			str.append("(" + e.getFirst() + ", " + e.getSecond() + "), ");
+		if (cs.size() > 1) {
+			str.append("Change Cont Class: [");
+			
+			for (int i = 0; i < cs.size() - 1; i++) {
+				str.append("(" + cs.get(i).getFirst() + ", " + cs.get(i).getSecond() + "), ");
+			}
+			
+			str.append("(" + cs.get(cs.size() - 1).getFirst() + ", " + cs.get(cs.size() - 1).getSecond() + ")");
+			
+			str.append("]");
+		} else {
+			str.append("(" + cs.get(0).getFirst() + ", " + cs.get(0).getSecond() + ")");
 		}
-		str.append("]");
 		
 		
 		return str.toString();

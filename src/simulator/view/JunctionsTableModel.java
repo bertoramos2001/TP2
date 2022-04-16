@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.Junction;
+import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
@@ -65,15 +66,22 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			s = junctions.get(rowIndex).getId();
 			break;
 		case 1:
-			s = junctions.get(rowIndex).getGreenLightIndex();
-			if(s.equals(-1))
+			int greenLight = junctions.get(rowIndex).getGreenLightIndex();
+			
+			if(greenLight == -1) {
 				s = "NONE";	
+			} else {
+				s = junctions.get(rowIndex).getInRoads().get(greenLight);
+			}
 			break;
 		case 2:
-			s = junctions.get(rowIndex).getInRoads();
-			if(s.equals("[]"))
-				s = "";
-
+			String sb = "";
+			for (int i = 0; i < junctions.get(rowIndex).getInRoads().size(); i++) {
+				Road actRoad = junctions.get(rowIndex).getInRoads().get(i);
+				sb = sb + actRoad.getId() + ":" + junctions.get(rowIndex).getQueueList().get(i) + " "; //mediante esta linea añadimos al modelo las listas de coches que estan esperando en el cruce actual en todas las carreteras
+			}
+			
+			s = sb;
 			break;
 		}	
 		return s;
