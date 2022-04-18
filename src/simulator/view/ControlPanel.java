@@ -3,6 +3,7 @@ package simulator.view;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JButton folderButton;
 	private JButton weatherButton;
 	
+	private final String ERROR_MSG_RUN = "Error al ejecutar el run";
+	private final String ERROR_MSG_NO_LOAD = "No existen ficheros";
+	private final String ERROR_MSG_LOAD = "Error al cargar";
+	private final String ERROR_MSG_ADD_CONT_EVENT = "Error al añadir el ContEvent";
+	private final String ERROR_MSG_ADD_WEATHER_EVENT= "Error al añadir el WeatherEvent";
 
 	ControlPanel(Controller ctrl) {
 		this.ctrl = ctrl;
@@ -72,8 +78,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onError(String err) {
-		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, err, "Error", JOptionPane.ERROR_MESSAGE);	
 	}
 	
 	 private void initGUI() {
@@ -91,7 +96,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		folderButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/open.png")));
 		folderButton.setToolTipText("Open a file");
 		myToolBar.add(folderButton);
-		//TODO: ver si esta gestión de errores ha de estar aqui
+		//TODO: ver si esta gestiÃ³n de errores ha de estar aqui
 		folderButton.addActionListener((e) -> {try {
 			loadFile(fc);
 		} catch (IOException e1) {
@@ -118,7 +123,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		myToolBar.addSeparator();
 		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
+		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo aÃ±adimos al toolbar
 		
 		JButton playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
@@ -161,6 +166,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		});
 		
 		myToolBar.setMargin(new Insets(5, 5, 5, 5));
+		enableToolBar(false);
 	}
 	
 		
@@ -168,8 +174,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void loadFile(JFileChooser fc) throws IOException {
 			int i = fc.showOpenDialog(this);
 			if (i == JFileChooser.APPROVE_OPTION) {
-				ctrl.reset();
-				ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
+				try {
+					ctrl.reset();
+					ctrl.loadEvents(new FileInputStream(fc.getSelectedFile()));
+				} catch (FileNotFoundException e) {
+					onError(ERROR_MSG_NO_LOAD);
+				} catch (Exception e1) {
+					onError(ERROR_MSG_LOAD);
+				}
 			}
 		}
 		
@@ -180,7 +192,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			if (status != 0) {
 				List<Pair<String, Integer>> cs = new ArrayList<>();
 				cs.add(new Pair<String, Integer>(contDialog.getVehicle().getId(), contDialog.getContClass()));
-				ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
+				try {
+					ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
+				} catch (Exception e) {
+					onError(ERROR_MSG_ADD_CONT_EVENT);
+				}
 			}
 			
 		}
@@ -192,7 +208,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			if (status != 0) {
 				List<Pair<String, Weather>> cs = new ArrayList<>();
 				cs.add(new Pair<String, Weather>(wDialog.getRoad().getId(), wDialog.getWeatherClass()));
-				ctrl.addEvent(new SetWeatherEvent(wDialog.getTime() + time, cs));
+				try {
+					ctrl.addEvent(new SetWeatherEvent(wDialog.getTime() + time, cs));
+				} catch (Exception e) {
+					onError(ERROR_MSG_ADD_WEATHER_EVENT);
+				}
+				
 			}
 			
 		}
@@ -209,6 +230,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 					ctrl.run(1);
 				} catch (Exception e) {
 					// TODO show error message
+					onError(ERROR_MSG_RUN);
 					stopped = true;
 					return;
 				}
@@ -227,5 +249,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void stop() {
 			stopped = true;
 		}
-
+		
+		//private String 
 }
