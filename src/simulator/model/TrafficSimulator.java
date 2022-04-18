@@ -3,6 +3,9 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.json.JSONObject;
 import simulator.misc.SortedArrayList;
 
@@ -31,24 +34,30 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		int aux = 0;
 		
 		onAdvanceStart(roadMap, eventList, time);
+			
+			while (aux < eventList.size() && time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
+				eventList.get(aux).execute(roadMap);
+				aux++;
+			}
 		
-		while (aux < eventList.size() && time == eventList.get(aux).getTime()) { //ejecutamos los eventos que coincidan en el turno actual, al estar ordenado por tiempo, si encontramos uno que no coincide con el tiempo actual, dejaremos de buscar
-			eventList.get(aux).execute(roadMap);
-			aux++;
-		}
-
-		for (int i = 0; i < aux; i++) { //borraremos todos los eventos ejecutados anteriormente (estan ordenados por tiempo)
-			eventList.remove(0);
-		}
-		
-		List<Junction> junctionList = roadMap.getJunctions();
-		for (Junction j : junctionList) {
-			j.advance(time);
-		}
-		
-		List<Road> roadList = roadMap.getRoads();
-		for (Road r : roadList) {
-			r.advance(time);
+			for (int i = 0; i < aux; i++) { //borraremos todos los eventos ejecutados anteriormente (estan ordenados por tiempo)
+				eventList.remove(0);
+			}
+			
+		try {
+			List<Junction> junctionList = roadMap.getJunctions();
+			for (Junction j : junctionList) {
+				j.advance(time);
+			}
+			
+			List<Road> roadList = roadMap.getRoads();
+			for (Road r : roadList) {
+				r.advance(time);
+			}
+						
+		} catch (Exception e){
+			onError(e.getMessage());
+			//JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		onAdvanceEnd(roadMap, eventList, time);
