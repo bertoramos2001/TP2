@@ -31,9 +31,10 @@ public class SetContClassEvent extends Event {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
+		str.append("Change Cont Class: ");
 		
 		if (cs.size() > 1) {
-			str.append("Change Cont Class: [");
+			str.append("[");
 			
 			for (int i = 0; i < cs.size() - 1; i++) {
 				str.append("(" + cs.get(i).getFirst() + ", " + cs.get(i).getSecond() + "), ");

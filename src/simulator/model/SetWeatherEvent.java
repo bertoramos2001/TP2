@@ -34,9 +34,10 @@ public class SetWeatherEvent extends Event {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
+		str.append("Change Weather: ");
 		
 		if (ws.size() > 1) {
-			str.append("Change Weather: [");
+			str.append("[");
 			
 			for (int i = 0; i < ws.size() - 1; i++) {
 				str.append("(" + ws.get(i).getFirst() + ", " + ws.get(i).getSecond() + "), ");
