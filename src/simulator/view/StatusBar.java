@@ -39,7 +39,6 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		showTime(0);
 		statusPanel.add(timeLabel);
 		statusPanel.add(Box.createRigidArea(new Dimension(125, 25)));
-		//TODO: por alguna razon, este separador no se muestra
 		JSeparator sep = new JSeparator(JSeparator.VERTICAL);
 		Dimension size = new Dimension(5, 50);
 		sep.setMaximumSize(size);
@@ -65,12 +64,10 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		showTime(time);
 		showEvent(null);
 		
@@ -78,26 +75,22 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
 		showEvent(e);
 		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		showTime(time);
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onError(String err) {
-		// TODO Auto-generated method stub
 		
 	}
 

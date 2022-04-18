@@ -59,7 +59,7 @@ public class Controller {
 		p.println(finalObj.toString(3));
 		
 	}
-	//TODO: clase hecha para que funcione run_sim en controlPanel. Ver si tiene que tener algo mas
+
 	public void run(int n) {
 		for (int i = 0; i < n; i++) {
 			simulator.advance();
@@ -71,17 +71,14 @@ public class Controller {
 	}
 	
 	public void addObserver(TrafficSimObserver o) {
-		//TODO: no se si la funcion es package protected (no lo menciona)
 		simulator.addObserver(o);
 	}
 	
 	public void removeObserver(TrafficSimObserver o) {
-		//no se si la funcion es package protected (no lo menciona)
 		simulator.removeObserver(o);
 	}
 	
 	public void addEvent(Event e) {
-		//no se si la funcion es package protected (no lo menciona)
 		simulator.addEvent(e);
 	}
 }

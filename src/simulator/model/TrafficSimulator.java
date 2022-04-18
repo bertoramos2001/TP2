@@ -95,7 +95,6 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	}
 	
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		//TODO: ver si todos estos son package protected, si esta bien lo que hice
 		for (TrafficSimObserver o : observerList) {
 			o.onAdvanceStart(map, events, time);
 		}

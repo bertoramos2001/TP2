@@ -96,11 +96,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		folderButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/open.png")));
 		folderButton.setToolTipText("Open a file");
 		myToolBar.add(folderButton);
-		//TODO: ver si esta gestiÃ³n de errores ha de estar aqui
 		folderButton.addActionListener((e) -> {try {
 			loadFile(fc);
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			onError(e1.getMessage());
 		}});
 		
 		myToolBar.addSeparator();
@@ -110,7 +109,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		contClassButton.setToolTipText("Change CO2 Class of a Vehicle");
 		myToolBar.add(contClassButton);
 		contClassButton.addActionListener((e) -> {
-			selectCont();
+			System.out.println(map);
+			if (map != null && map.getVehicles().size() > 0) {
+				selectCont();
+			}
 		});
 		
 		weatherButton = new JButton();
@@ -118,12 +120,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		weatherButton.setToolTipText("Change Weather of a Road");
 		myToolBar.add(weatherButton);
 		weatherButton.addActionListener((e) -> {
-			selectWeather();
+			if (map != null && map.getRoads().size() > 0) {
+				selectWeather();
+			}
 		});
 		
 		myToolBar.addSeparator();
 		
-		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo aÃ±adimos al toolbar
+		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
 		
 		JButton playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
@@ -166,7 +170,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		});
 		
 		myToolBar.setMargin(new Insets(5, 5, 5, 5));
-		enableToolBar(false);
 	}
 	
 		
@@ -192,11 +195,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			if (status != 0) {
 				List<Pair<String, Integer>> cs = new ArrayList<>();
 				cs.add(new Pair<String, Integer>(contDialog.getVehicle().getId(), contDialog.getContClass()));
-				try {
-					ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
-				} catch (Exception e) {
-					onError(ERROR_MSG_ADD_CONT_EVENT);
-				}
+					try {
+						ctrl.addEvent(new SetContClassEvent(contDialog.getTime() + time, cs));
+					} catch (Exception e) {
+						onError(ERROR_MSG_ADD_CONT_EVENT);
+					}
 			}
 			
 		}
@@ -204,6 +207,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void selectWeather() {
 			ChangeWeatherDialog wDialog = new ChangeWeatherDialog((Frame)SwingUtilities.getWindowAncestor(this));
 			int status = map != null ? wDialog.open(map.getRoads()) : 0;
+			
 			
 			if (status != 0) {
 				List<Pair<String, Weather>> cs = new ArrayList<>();
@@ -229,7 +233,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 				try {
 					ctrl.run(1);
 				} catch (Exception e) {
-					// TODO show error message
 					onError(ERROR_MSG_RUN);
 					stopped = true;
 					return;
@@ -249,6 +252,4 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		private void stop() {
 			stopped = true;
 		}
-		
-		//private String 
 }

@@ -115,7 +115,6 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onError(String err) {
-		// TODO Auto-generated method stub
 		
 	}
 
