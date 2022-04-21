@@ -25,8 +25,12 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	}
 	
 	public void addEvent(Event e) {
-		eventList.add(e);
-		onEventAdded(roadMap, eventList, e, time);
+		if (e.getTime() < time) {
+			onError("El tiempo del evento es menor al tiempo actual");
+		} else {
+			eventList.add(e);
+			onEventAdded(roadMap, eventList, e, time);
+		}
 	}
 	
 	public void advance() { 

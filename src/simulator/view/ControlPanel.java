@@ -33,6 +33,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JToolBar myToolBar;
 	private JButton folderButton;
 	private JButton weatherButton;
+	private JButton playButton;
 	
 	private final String ERROR_MSG_RUN = "Error al ejecutar el run";
 	private final String ERROR_MSG_NO_LOAD = "No existen ficheros";
@@ -129,7 +130,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
 		
-		JButton playButton = new JButton();
+		playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
 		playButton.setToolTipText("Run the simulator");
 		myToolBar.add(playButton);
@@ -223,6 +224,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		}
 		
 		private void enableToolBar(boolean enabled) {
+			playButton.setEnabled(enabled);
 			folderButton.setEnabled(enabled);
 			contClassButton.setEnabled(enabled);
 			weatherButton.setEnabled(enabled);					
