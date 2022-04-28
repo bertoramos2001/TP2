@@ -19,7 +19,7 @@ import simulator.model.Road;
 import simulator.model.Vehicle;
 import simulator.model.Weather;
 
-public class ChangeWeatherDialog extends JDialog{
+public class ChangeWeatherDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	private JComboBox<Road> roads;

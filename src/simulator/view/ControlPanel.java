@@ -19,15 +19,15 @@ import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Weather;
 
-public class ControlPanel extends JPanel implements TrafficSimObserver {
+public class ControlPanel extends JPanel implements TrafficSimObserver, Runnable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Controller ctrl;
-	private boolean stopped;
 	private RoadMap map;
 	private int time;
+	private volatile Thread _thread;
 	
 	private JButton contClassButton;
 	private JToolBar myToolBar;
@@ -35,7 +35,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JButton weatherButton;
 	private JButton playButton;
 	
-	private final String ERROR_MSG_RUN = "Error al ejecutar el run";
 	private final String ERROR_MSG_NO_LOAD = "No existen ficheros";
 	private final String ERROR_MSG_LOAD = "Error al cargar";
 	private final String ERROR_MSG_ADD_CONT_EVENT = "Error al añadir el ContEvent";
@@ -129,6 +128,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		myToolBar.addSeparator();
 		
 		JSpinner contTicks = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1)); //declaramos aqui el spinner para poder usarlo en run(), mas abajo lo añadimos al toolbar
+		JSpinner contDelay = new JSpinner(new SpinnerNumberModel(10, 1, 1000, 1));
 		
 		playButton = new JButton();
 		playButton.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage("resources/icons/run.png")));
@@ -136,8 +136,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		myToolBar.add(playButton);
 		playButton.addActionListener((e) -> {
 			enableToolBar(false);
-			stopped = false;
-			run_sim((Integer)contTicks.getValue());
+			
+			_thread = new Thread() {
+				public void run() {
+					run_sim((Integer)contTicks.getValue(), ((Number)contDelay.getValue()).longValue());
+					enableToolBar(true);
+				}
+			};
+			_thread.start();
+			
+			//TODO: quitar esto
+			//stopped = false;
+			//run_sim((Integer)contTicks.getValue(), (long)contDelay.getValue());
 		});
 		
 		JButton stopButton = new JButton();
@@ -149,12 +159,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		});
 		//listener del boton
 		
-		JLabel ticks = new JLabel("Ticks");
+		JLabel ticks = new JLabel("Ticks: ");
 		myToolBar.add(ticks);
 		
 		contTicks.setMaximumSize(new Dimension(50, 50));
 		contTicks.setToolTipText("Simulation tick to run: 1-1000");
 		myToolBar.add(contTicks);
+		
+		JLabel delay = new JLabel("Delay: ");
+		myToolBar.add(delay);
+		
+		contDelay.setMaximumSize(new Dimension(50, 50));
+		contDelay.setToolTipText("Delay ticks to wait: 1-1000");
+		myToolBar.add(contDelay);
 		
 		myToolBar.add(Box.createGlue());
 		myToolBar.addSeparator();
@@ -230,28 +247,48 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 			weatherButton.setEnabled(enabled);					
 		}
 		
-		private void run_sim(int n) {
-			if (n > 0 && !stopped) {
+		//private void run_sim(int n, long delay) {
+		//	if (n > 0 && !stopped) {
+		//		try {
+		//			ctrl.run(1);
+		//		} catch (Exception e) {
+		//			onError(ERROR_MSG_RUN);
+		//			stopped = true;
+		//			return;
+		//		}
+		//		SwingUtilities.invokeLater(new Runnable() {
+		//			@Override
+		//			public void run() {
+		//				run_sim(n - 1, delay);
+		//			}
+		//		});
+		//	} else {
+		//		enableToolBar(true);
+		//		stopped = true;
+		//	}
+		//}
+		
+		private void run_sim(int n, long delay) {
+			while (n > 0 && !Thread.interrupted()) {
+				ctrl.run(1);
 				try {
-					ctrl.run(1);
-				} catch (Exception e) {
-					onError(ERROR_MSG_RUN);
-					stopped = true;
-					return;
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					_thread.interrupt();
 				}
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						run_sim(n - 1);
-					}
-				});
-			} else {
-				enableToolBar(true);
-				stopped = true;
+				n--;
 			}
 		}
 		
 		private void stop() {
-			stopped = true;
+			if (_thread != null) {
+				_thread.interrupt();
+			}
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
 		}
 }

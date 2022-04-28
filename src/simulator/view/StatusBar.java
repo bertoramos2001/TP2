@@ -68,20 +68,35 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		showTime(time);
-		showEvent(null);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				showTime(time);
+				showEvent(null);
+			}
+		});
 		
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		showEvent(e);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				showEvent(e);
+			}
+		});
 		
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		showTime(time);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				showTime(time);
+			}
+		});
 	}
 
 	@Override

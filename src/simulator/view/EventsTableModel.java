@@ -3,6 +3,7 @@ package simulator.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
@@ -77,27 +78,53 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
-		setEventsList(events);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setEventsList(events);
+			}
+		});
 	}
 
 	@Override
 	public void onAdvanceEnd(RoadMap map, List<Event> events, int time) {
-		setEventsList(events);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setEventsList(events);
+			}
+		});
 	}
 
 	@Override
 	public void onEventAdded(RoadMap map, List<Event> events, Event e, int time) {
-		setEventsList(events);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setEventsList(events);
+			}
+		});
 	}
 
 	@Override
 	public void onReset(RoadMap map, List<Event> events, int time) {
-		setEventsList(events);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setEventsList(events);
+			}
+		});
 	}
 
 	@Override
 	public void onRegister(RoadMap map, List<Event> events, int time) {
-		setEventsList(events);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setEventsList(events);
+			}
+		});
 	}
 
 	@Override
