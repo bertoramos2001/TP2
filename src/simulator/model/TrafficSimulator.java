@@ -61,7 +61,6 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 						
 		} catch (Exception e){
 			onError(e.getMessage());
-			//JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		onAdvanceEnd(roadMap, eventList, time);

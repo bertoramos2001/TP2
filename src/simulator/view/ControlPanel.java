@@ -144,10 +144,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, Runnable
 				}
 			};
 			_thread.start();
-			
-			//TODO: quitar esto
-			//stopped = false;
-			//run_sim((Integer)contTicks.getValue(), (long)contDelay.getValue());
 		});
 		
 		JButton stopButton = new JButton();
@@ -247,27 +243,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, Runnable
 			weatherButton.setEnabled(enabled);					
 		}
 		
-		//private void run_sim(int n, long delay) {
-		//	if (n > 0 && !stopped) {
-		//		try {
-		//			ctrl.run(1);
-		//		} catch (Exception e) {
-		//			onError(ERROR_MSG_RUN);
-		//			stopped = true;
-		//			return;
-		//		}
-		//		SwingUtilities.invokeLater(new Runnable() {
-		//			@Override
-		//			public void run() {
-		//				run_sim(n - 1, delay);
-		//			}
-		//		});
-		//	} else {
-		//		enableToolBar(true);
-		//		stopped = true;
-		//	}
-		//}
-		
 		private void run_sim(int n, long delay) {
 			while (n > 0 && !Thread.interrupted()) {
 				ctrl.run(1);
@@ -288,7 +263,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, Runnable
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
 			
 		}
 }
