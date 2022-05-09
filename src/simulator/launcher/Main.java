@@ -108,10 +108,13 @@ public class Main {
 	}
 	
 	private static void parseTicksOption(CommandLine line) throws ParseException {
-		if(line.hasOption('t'))
+		if(line.hasOption('t')) {
 			ticks = Integer.parseInt(line.getOptionValue('t'));
-		else
+			System.out.println(ticks);
+		}
+		else {
 			ticks = _timeLimitDefaultValue;
+		}
 	}
 	
 	private static void parseModeOption(CommandLine line) throws ParseException {
@@ -162,7 +165,15 @@ public class Main {
 		}
 		
 		controller.loadEvents(new FileInputStream(_inFile));
-		controller.run(ticks, new FileOutputStream(_outFile));
+		
+		FileOutputStream out;
+		
+		try {
+			out = new FileOutputStream(_outFile);
+			controller.run(ticks, out);
+		} catch(Exception e) {
+			controller.run(ticks, System.out);
+		}
 	}
 	
 	private static void startGUIMode() throws IOException {
